@@ -1,0 +1,154 @@
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+
+import { getErrorMessage } from "../api/client.js";
+import { createOrder, getPackage } from "../api/visaPacks.js";
+import ErrorMessage from "../components/ErrorMessage.jsx";
+import Loading from "../components/Loading.jsx";
+
+const currencyFormat = (amount, currency) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency }).format(amount);
+
+const emptyForm = { customerName: "", email: "", phone: "", travelDate: "", notes: "" };
+
+export default function Checkout() {
+  const { packageId } = useParams();
+  const navigate = useNavigate();
+
+  const [pkg, setPkg] = useState(null);
+  const [loadError, setLoadError] = useState(null);
+  const [form, setForm] = useState(emptyForm);
+  const [submitError, setSubmitError] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    getPackage(packageId)
+      .then(setPkg)
+      .catch((err) => setLoadError(getErrorMessage(err)));
+  }, [packageId]);
+
+  if (loadError) return <ErrorMessage message={loadError} />;
+  if (!pkg) return <Loading label="Loading package..." />;
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setSubmitError(null);
+    setSubmitting(true);
+    try {
+      const order = await createOrder({ packageId: pkg.id, ...form });
+      navigate(`/order-confirmation/${order.id}`);
+    } catch (err) {
+      setSubmitError(getErrorMessage(err));
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="mx-auto max-w-4xl px-4 sm:px-6 py-12">
+      <Link
+        to={`/countries/${pkg.visaType.country.slug}/${pkg.visaType.slug}`}
+        className="text-sm text-brand-600 hover:text-brand-700 font-medium"
+      >
+        ← Back to packages
+      </Link>
+
+      <h1 className="mt-4 text-3xl font-extrabold text-slate-900">Checkout</h1>
+
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-5 gap-8">
+        <form onSubmit={handleSubmit} className="md:col-span-3 space-y-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Field label="Full name" name="customerName" required value={form.customerName} onChange={handleChange} />
+            <Field
+              label="Email address"
+              name="email"
+              type="email"
+              required
+              value={form.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Field label="Phone (optional)" name="phone" value={form.phone} onChange={handleChange} />
+            <Field
+              label="Planned travel date (optional)"
+              name="travelDate"
+              type="date"
+              value={form.travelDate}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
+              Anything we should know? (optional)
+            </label>
+            <textarea
+              name="notes"
+              rows={4}
+              value={form.notes}
+              onChange={handleChange}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              placeholder="E.g. previous visa refusals, tight travel dates, dependents on the application..."
+            />
+          </div>
+
+          {submitError && <p className="text-sm text-red-600">{submitError}</p>}
+
+          <button
+            type="submit"
+            disabled={submitting}
+            className="w-full rounded-lg bg-brand-600 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60 transition-colors"
+          >
+            {submitting ? "Placing order..." : `Confirm purchase - ${currencyFormat(pkg.price, pkg.currency)}`}
+          </button>
+          <p className="text-xs text-slate-400 text-center">
+            This is a demo checkout. No payment is collected; a payment provider can be
+            plugged into the backend order flow later.
+          </p>
+        </form>
+
+        <aside className="md:col-span-2 h-fit rounded-2xl border border-slate-200 bg-slate-50 p-6">
+          <p className="text-xs font-medium uppercase tracking-wide text-brand-600">
+            {pkg.visaType.country.flagEmoji} {pkg.visaType.country.name}
+          </p>
+          <h2 className="mt-1 font-semibold text-slate-900">{pkg.visaType.name}</h2>
+          <div className="mt-4 flex items-center justify-between border-t border-slate-200 pt-4">
+            <span className="text-sm text-slate-600">{pkg.name} package</span>
+            <span className="font-bold text-slate-900">{currencyFormat(pkg.price, pkg.currency)}</span>
+          </div>
+          <ul className="mt-4 space-y-2 text-sm text-slate-600">
+            {pkg.features.map((feature) => (
+              <li key={feature} className="flex items-start gap-2">
+                <span className="mt-0.5 text-brand-600">✓</span>
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      </div>
+    </div>
+  );
+}
+
+function Field({ label, name, type = "text", required, value, onChange }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium text-slate-700 mb-1">
+        {label} {required && <span className="text-red-500">*</span>}
+      </label>
+      <input
+        type={type}
+        name={name}
+        required={required}
+        value={value}
+        onChange={onChange}
+        className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+      />
+    </div>
+  );
+}
