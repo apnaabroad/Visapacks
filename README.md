@@ -9,7 +9,7 @@ customers always apply themselves).
 
 - **Frontend**: React 18 + Vite + React Router + Tailwind CSS v4
 - **Backend**: Node.js + Express (runs as a normal server locally, and as a
-  Vercel Serverless Function in production - see `backend/api/index.js`)
+  Vercel Serverless Function in production - see `backend/api/[[...path]].js`)
 - **Database**: Postgres via Prisma ORM
 
 ## Project structure
@@ -18,11 +18,11 @@ customers always apply themselves).
 Visapacks/
 ├── backend/
 │   ├── api/
-│   │   └── index.js           # Vercel Serverless Function entry point (wraps the Express app)
+│   │   └── [[...path]].js     # Vercel Serverless Function - matches all of /api/* natively
 │   ├── prisma/
 │   │   ├── schema.prisma      # Country, VisaType, Package, Order models
 │   │   └── seed.js            # Seeds the 8 launch countries - see "Adding a country"
-│   ├── vercel.json            # Routes every request to the serverless function
+│   ├── vercel.json            # Routes the non-/api paths ("/", "/health") to the same function
 │   └── src/
 │       ├── controllers/       # Request handlers
 │       ├── routes/            # Express routers
@@ -176,9 +176,12 @@ runs `prisma generate`, syncs the schema into your new database with
 `prisma db push`, and seeds the 8 launch countries - all automatically, every
 deploy. No separate migration step to run by hand.
 
-When it finishes, note the resulting URL, e.g. `https://visapacks-backend.vercel.app`.
-Open `<that-url>/health` in a browser - you should see `{"status":"ok"}`.
-Open `<that-url>/api/countries` - you should see the 8 seeded countries as JSON.
+When it finishes, get the definitive production URL from the project's
+**Deployments** tab → the latest deployment → **Domains** (don't guess from
+the dashboard/team URL in your browser's address bar - that's your account
+scope, not necessarily the deployment's public domain). Open `<that-url>/health`
+in a browser - you should see `{"status":"ok"}`. Open `<that-url>/api/countries` -
+you should see the 8 seeded countries as JSON.
 
 ### 4. Deploy the frontend
 
@@ -199,6 +202,19 @@ unset, which the app treats as `*`) so step 3 and 4 don't need to happen in a
 particular order. Once you know your frontend's URL, you can go back to the
 backend project's **Settings → Environment Variables**, add
 `CORS_ORIGIN` = `https://<your-frontend-url>`, and redeploy to restrict it.
+
+### Troubleshooting: `/api/*` routes 404 but `/` doesn't
+
+Vercel treats the `api/` directory as a reserved, filesystem-routed
+namespace: any request path starting with `/api/` is matched directly
+against files in that folder *before* `vercel.json`'s `rewrites` are
+considered, regardless of what those rewrites say. That's why the Express
+entry point is named `backend/api/[[...path]].js` - the optional catch-all
+filename makes Vercel's own filesystem routing match every path under
+`/api/*` (including the bare `/api`) natively, with no rewrite involved. If
+you ever rename or restructure that file, keep it (or an equivalent
+catch-all) directly inside `backend/api/`, or every `/api/*` route will 404
+again even though non-`/api` paths keep working.
 
 ### Local dev after switching to a hosted database
 
