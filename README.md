@@ -9,7 +9,7 @@ customers always apply themselves).
 
 - **Frontend**: React 18 + Vite + React Router + Tailwind CSS v4
 - **Backend**: Node.js + Express (runs as a normal server locally, and as a
-  Vercel Serverless Function in production - see `backend/api/[[...path]].js`)
+  Vercel Serverless Function in production - see `backend/api/[...path].js`)
 - **Database**: Postgres via Prisma ORM
 
 ## Project structure
@@ -18,11 +18,10 @@ customers always apply themselves).
 Visapacks/
 ├── backend/
 │   ├── api/
-│   │   └── [[...path]].js     # Vercel Serverless Function - matches all of /api/* natively
+│   │   └── [...path].js       # Vercel Serverless Function - matches all of /api/* natively
 │   ├── prisma/
 │   │   ├── schema.prisma      # Country, VisaType, Package, Order models
 │   │   └── seed.js            # Seeds the 8 launch countries - see "Adding a country"
-│   ├── vercel.json            # Routes the non-/api paths ("/", "/health") to the same function
 │   └── src/
 │       ├── controllers/       # Request handlers
 │       ├── routes/            # Express routers
@@ -128,6 +127,7 @@ was designed to support that without changes.
 
 | Method | Path                                                    | Description                          |
 | ------ | -------------------------------------------------------- | ------------------------------------- |
+| GET    | `/api/health`                                              | Health check (use this on Vercel, not bare `/health`) |
 | GET    | `/api/countries`                                          | List active countries                 |
 | GET    | `/api/countries/:slug`                                    | Country + its visa types              |
 | GET    | `/api/countries/:countrySlug/visa-types/:visaTypeSlug`     | Visa type + its packages              |
@@ -179,9 +179,11 @@ deploy. No separate migration step to run by hand.
 When it finishes, get the definitive production URL from the project's
 **Deployments** tab → the latest deployment → **Domains** (don't guess from
 the dashboard/team URL in your browser's address bar - that's your account
-scope, not necessarily the deployment's public domain). Open `<that-url>/health`
+scope, not necessarily the deployment's public domain). Open `<that-url>/api/health`
 in a browser - you should see `{"status":"ok"}`. Open `<that-url>/api/countries` -
-you should see the 8 seeded countries as JSON.
+you should see the 8 seeded countries as JSON. (Use `/api/health`, not bare
+`/health`, when checking a Vercel deployment - see the troubleshooting note
+below for why only paths under `/api/*` are guaranteed to reach the app there.)
 
 ### 4. Deploy the frontend
 
@@ -203,18 +205,40 @@ particular order. Once you know your frontend's URL, you can go back to the
 backend project's **Settings → Environment Variables**, add
 `CORS_ORIGIN` = `https://<your-frontend-url>`, and redeploy to restrict it.
 
+**If you add a custom domain** (e.g. `visapacks.com`) to the frontend
+project later, `CORS_ORIGIN` needs to include it too, or every request from
+that domain gets CORS-blocked even though the API itself works fine - the
+browser shows this as "No 'Access-Control-Allow-Origin' header is present"
+in the console. Set `CORS_ORIGIN` to your custom domain (either the apex,
+`https://visapacks.com`, or the `www` subdomain, `https://www.visapacks.com`
+- the backend automatically allows both once it sees either one, so you
+don't need to list both explicitly), then redeploy the backend for the env
+var change to take effect. If you serve both the apex and `www` as
+independent domains and something else is stricter about matching, you can
+still list them both explicitly, comma-separated:
+`https://visapacks.com,https://www.visapacks.com`.
+
 ### Troubleshooting: `/api/*` routes 404 but `/` doesn't
 
 Vercel treats the `api/` directory as a reserved, filesystem-routed
 namespace: any request path starting with `/api/` is matched directly
-against files in that folder *before* `vercel.json`'s `rewrites` are
-considered, regardless of what those rewrites say. That's why the Express
-entry point is named `backend/api/[[...path]].js` - the optional catch-all
-filename makes Vercel's own filesystem routing match every path under
-`/api/*` (including the bare `/api`) natively, with no rewrite involved. If
-you ever rename or restructure that file, keep it (or an equivalent
-catch-all) directly inside `backend/api/`, or every `/api/*` route will 404
-again even though non-`/api` paths keep working.
+against files in that folder, natively - no `vercel.json` rewrite is
+involved or needed. That's why the Express entry point is named
+`backend/api/[...path].js` - Vercel's required catch-all filename convention
+(one or more path segments), which is reliably supported for plain
+Serverless Functions in general, not just Next.js apps (the double-bracket
+"optional" catch-all variant, `[[...path]].js`, is a Next.js routing
+convention and isn't guaranteed to behave the same way outside of it - an
+earlier version of this file used that spelling and it did not correctly
+route nested paths like `/api/countries/united-states`). Every route this
+app actually serves has at least one segment under `/api` (`/api/countries`,
+`/api/orders`, etc.), so the required catch-all covers all of them; only a
+literal bare `/api` would need the optional variant, and nothing here calls
+that. This is also why the health check lives at `/api/health` rather than
+bare `/health` - only paths under `/api/*` are guaranteed to reach the app
+on Vercel without extra routing config. If you ever rename or restructure
+that file, keep it (or an equivalent required catch-all) directly inside
+`backend/api/`, or every `/api/*` route will 404 again.
 
 ### Local dev after switching to a hosted database
 
