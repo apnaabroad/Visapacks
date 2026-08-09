@@ -8,18 +8,21 @@ customers always apply themselves).
 ## Stack
 
 - **Frontend**: React 18 + Vite + React Router + Tailwind CSS v4
-- **Backend**: Node.js + Express
-- **Database**: SQLite via Prisma ORM (see [Switching to Postgres](#switching-to-postgres))
+- **Backend**: Node.js + Express (runs as a normal server locally, and as a
+  Vercel Serverless Function in production - see `backend/api/index.js`)
+- **Database**: Postgres via Prisma ORM
 
 ## Project structure
 
 ```
 Visapacks/
 ├── backend/
+│   ├── api/
+│   │   └── index.js           # Vercel Serverless Function entry point (wraps the Express app)
 │   ├── prisma/
 │   │   ├── schema.prisma      # Country, VisaType, Package, Order models
-│   │   ├── seed.js            # Seeds the 8 launch countries - see "Adding a country"
-│   │   └── migrations/
+│   │   └── seed.js            # Seeds the 8 launch countries - see "Adding a country"
+│   ├── vercel.json            # Routes every request to the serverless function
 │   └── src/
 │       ├── controllers/       # Request handlers
 │       ├── routes/            # Express routers
@@ -55,18 +58,22 @@ once they exist in the database.
 
 ## Setup
 
-Requires Node.js 18+.
+Requires Node.js 18+ and a reachable Postgres database (a local Postgres, Docker,
+or a free hosted instance - see [Deploying to Vercel](#deploying-to-vercel) below
+for how to get one in a couple of minutes; the same database works for both
+local dev and production).
 
 ```bash
 npm install                 # installs root, backend, and frontend workspaces
 cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env
-npm run db:migrate          # creates the SQLite database and tables
+# edit backend/.env and set DATABASE_URL to your Postgres connection string
+npm run db:migrate          # creates the tables (and records a migration you can commit)
 npm run db:seed             # seeds the 8 launch countries/visa types/packages
 npm run dev                 # runs backend (http://localhost:4000) and frontend (http://localhost:5173) together
 ```
 
-Or run everything in one shot: `npm run setup && npm run dev`.
+Or run everything in one shot once `DATABASE_URL` is set: `npm run setup && npm run dev`.
 
 Useful individual commands:
 
@@ -135,15 +142,69 @@ Checkout currently creates a `PENDING` order without collecting real payment
 provider (Stripe, Razorpay, etc.) in `backend/src/controllers/orders.controller.js`
 and flip the order to `PAID` on a successful charge/webhook.
 
-## Switching to Postgres
+## Deploying to Vercel
 
-The default SQLite setup requires no external services, which makes local
-development and this initial setup frictionless. To move to Postgres for
-production:
+The frontend and backend deploy as two separate Vercel projects from the same
+GitHub repo. Everything below is done in the Vercel dashboard - no CLI or
+local commands are required.
 
-1. In `backend/prisma/schema.prisma`, change the datasource provider from
-   `sqlite` to `postgresql`.
-2. Set `DATABASE_URL` in `backend/.env` to your Postgres connection string.
-3. Run `npm run db:migrate` again to create the schema in the new database.
+### 1. Create a free Vercel account
 
-No model or application code changes are needed.
+Go to [vercel.com](https://vercel.com) and sign up, ideally with **Continue
+with GitHub** using the account that has access to this repo - that makes the
+next steps a one-click "import" instead of a manual git connection.
+
+### 2. Create a Postgres database
+
+From the Vercel dashboard: **Storage → Create Database → Postgres** (the
+option labeled for use with Prisma). Give it a name (e.g. `visapacks-db`) and
+create it. Once it's created, open its **`.env.local`** / "Quickstart" tab and
+copy the connection string shown there - you'll paste it as `DATABASE_URL` in
+the next step. Free tier is enough for this project.
+
+### 3. Deploy the backend
+
+**Add New → Project → Import** this repo, then:
+
+- **Root Directory**: `backend`
+- **Framework Preset**: Other
+- **Environment Variables**: add `DATABASE_URL` = *(the connection string from step 2)*
+- Click **Deploy**
+
+On deploy, Vercel runs `backend/package.json`'s `vercel-build` script, which
+runs `prisma generate`, syncs the schema into your new database with
+`prisma db push`, and seeds the 8 launch countries - all automatically, every
+deploy. No separate migration step to run by hand.
+
+When it finishes, note the resulting URL, e.g. `https://visapacks-backend.vercel.app`.
+Open `<that-url>/health` in a browser - you should see `{"status":"ok"}`.
+Open `<that-url>/api/countries` - you should see the 8 seeded countries as JSON.
+
+### 4. Deploy the frontend
+
+**Add New → Project → Import** the same repo again, then:
+
+- **Root Directory**: `frontend`
+- **Framework Preset**: Vite (auto-detected)
+- **Environment Variables**: add `VITE_API_URL` = `https://<your-backend-url-from-step-3>/api`
+- Click **Deploy**
+
+When it finishes, the resulting URL (e.g. `https://visapacks-frontend.vercel.app`)
+is your public site - open it in a browser.
+
+### 5. (Optional) Lock down CORS
+
+By default the backend accepts requests from any origin (`CORS_ORIGIN` is
+unset, which the app treats as `*`) so step 3 and 4 don't need to happen in a
+particular order. Once you know your frontend's URL, you can go back to the
+backend project's **Settings → Environment Variables**, add
+`CORS_ORIGIN` = `https://<your-frontend-url>`, and redeploy to restrict it.
+
+### Local dev after switching to a hosted database
+
+Once you have a `DATABASE_URL` from step 2, run `npm run db:migrate` locally
+(from a machine with normal network access to Postgres) instead of
+`db:push` - this generates and commits a proper `backend/prisma/migrations/`
+folder so future schema changes are tracked. `db:push` (used by the Vercel
+build) is intentionally migration-free so first-time deploys never depend on
+a migration history existing yet.

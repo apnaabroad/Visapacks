@@ -1,7 +1,6 @@
 import { prisma } from "../lib/prisma.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { serializeVisaType } from "../utils/serialize.js";
 
 // GET /api/countries/:countrySlug/visa-types/:visaTypeSlug
 export const getVisaType = asyncHandler(async (req, res) => {
@@ -26,5 +25,5 @@ export const getVisaType = asyncHandler(async (req, res) => {
     throw new ApiError(404, `Visa type "${visaTypeSlug}" not found for ${country.name}`);
   }
 
-  res.json({ ...serializeVisaType(visaType), country });
+  res.json({ ...visaType, country });
 });

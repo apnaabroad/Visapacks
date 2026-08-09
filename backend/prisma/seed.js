@@ -25,12 +25,12 @@ function buildTiers(basePrice, currency = "USD") {
       currency,
       turnaround: "Self-paced",
       popular: false,
-      features: JSON.stringify([
+      features: [
         "Personalized document checklist",
         "Step-by-step application guide",
         "Access to official form links",
         "Email support (48h response)",
-      ]),
+      ],
     },
     {
       tier: "STANDARD",
@@ -40,13 +40,13 @@ function buildTiers(basePrice, currency = "USD") {
       currency,
       turnaround: "3-5 business days",
       popular: true,
-      features: JSON.stringify([
+      features: [
         "Everything in Basic",
         "Application form review by a visa expert",
         "Document verification & error checks",
         "Unlimited email support",
         "Live chat support (24h response)",
-      ]),
+      ],
     },
     {
       tier: "PREMIUM",
@@ -56,14 +56,14 @@ function buildTiers(basePrice, currency = "USD") {
       currency,
       turnaround: "1-2 business days",
       popular: false,
-      features: JSON.stringify([
+      features: [
         "Everything in Standard",
         "1-on-1 video consultation with an expert",
         "Mock visa interview & prep session",
         "Application submitted-with-you walkthrough",
         "Priority support (same-day response)",
         "Rejection-risk assessment report",
-      ]),
+      ],
     },
   ];
 }

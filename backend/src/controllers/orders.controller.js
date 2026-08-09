@@ -2,7 +2,6 @@ import { prisma } from "../lib/prisma.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { generateOrderNumber } from "../utils/orderNumber.js";
-import { serializeOrder } from "../utils/serialize.js";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -42,7 +41,7 @@ export const createOrder = asyncHandler(async (req, res) => {
     },
   });
 
-  res.status(201).json(serializeOrder(order));
+  res.status(201).json(order);
 });
 
 // GET /api/orders/:id
@@ -58,5 +57,5 @@ export const getOrder = asyncHandler(async (req, res) => {
     throw new ApiError(404, `Order "${req.params.id}" not found`);
   }
 
-  res.json(serializeOrder(order));
+  res.json(order);
 });

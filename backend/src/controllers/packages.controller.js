@@ -1,7 +1,6 @@
 import { prisma } from "../lib/prisma.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { serializePackage } from "../utils/serialize.js";
 
 // GET /api/packages/:id
 export const getPackage = asyncHandler(async (req, res) => {
@@ -18,5 +17,5 @@ export const getPackage = asyncHandler(async (req, res) => {
     throw new ApiError(404, `Package "${req.params.id}" not found`);
   }
 
-  res.json(serializePackage(pkg));
+  res.json(pkg);
 });

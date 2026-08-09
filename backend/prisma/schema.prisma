@@ -1,14 +1,17 @@
 // VisaPacks database schema
-// Default datasource is SQLite for zero-setup local development.
-// To move to production, switch provider to "postgresql" and set DATABASE_URL
-// to a Postgres connection string - no model changes required.
+// Postgres in production (deployed as Vercel Serverless Functions with no
+// persistent local disk, so SQLite isn't an option there). Point DATABASE_URL
+// at any Postgres instance - Vercel Postgres/Neon, Supabase, RDS, etc.
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // Vercel's Node.js Serverless Function runtime needs this engine binary
+  // in addition to whatever platform generates the client locally.
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -50,30 +53,40 @@ model VisaType {
   @@index([active])
 }
 
+enum PackageTier {
+  BASIC
+  STANDARD
+  PREMIUM
+}
+
 // A purchasable self-service assistance package for a visa type.
-// `tier` is one of: BASIC | STANDARD | PREMIUM
-// (plain String because SQLite has no native enum support; validated in the API layer).
 model Package {
-  id          String      @id @default(cuid())
-  visaTypeId  String
-  visaType    VisaType    @relation(fields: [visaTypeId], references: [id], onDelete: Cascade)
-  tier        String
-  name        String
-  tagline     String?
-  price       Float
-  currency    String      @default("USD")
-  turnaround  String?
-  features    String // JSON-encoded array of feature strings shown on the pricing card
-  popular     Boolean     @default(false)
-  active      Boolean     @default(true)
-  orders      Order[]
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id         String      @id @default(cuid())
+  visaTypeId String
+  visaType   VisaType    @relation(fields: [visaTypeId], references: [id], onDelete: Cascade)
+  tier       PackageTier
+  name       String
+  tagline    String?
+  price      Float
+  currency   String      @default("USD")
+  turnaround String?
+  features   Json // array of feature strings shown on the pricing card
+  popular    Boolean     @default(false)
+  active     Boolean     @default(true)
+  orders     Order[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 
   @@unique([visaTypeId, tier])
 }
 
-// `status` is one of: PENDING | PAID | IN_PROGRESS | COMPLETED | CANCELLED
+enum OrderStatus {
+  PENDING
+  PAID
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
 
 // A customer's purchase of a package. No user accounts are required to buy -
 // customer details are captured directly on the order (guest checkout).
@@ -89,7 +102,7 @@ model Order {
   notes        String?
   amount       Float
   currency     String      @default("USD")
-  status       String      @default("PENDING")
+  status       OrderStatus @default(PENDING)
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
 
