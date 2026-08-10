@@ -247,17 +247,30 @@ how many segments it captures:
 
 ```
 backend/api/
-├── health.js                                        → GET  /api/health
+├── health.js                                  → GET  /api/health
 ├── countries/
-│   ├── index.js                                      → GET  /api/countries
-│   ├── [slug].js                                      → GET  /api/countries/:slug
-│   └── [countrySlug]/visa-types/[visaTypeSlug].js      → GET  /api/countries/:countrySlug/visa-types/:visaTypeSlug
+│   ├── index.js                                → GET  /api/countries
+│   ├── [slug].js                                → GET  /api/countries/:slug
+│   └── [slug]/visa-types/[visaTypeSlug].js       → GET  /api/countries/:slug/visa-types/:visaTypeSlug
 ├── packages/
-│   └── [id].js                                        → GET  /api/packages/:id
+│   └── [id].js                                  → GET  /api/packages/:id
 └── orders/
-    ├── index.js                                       → POST /api/orders
-    └── [id].js                                        → GET  /api/orders/:id
+    ├── index.js                                 → POST /api/orders
+    └── [id].js                                   → GET  /api/orders/:id
 ```
+
+**Naming rule that matters here**: a file and a directory can coexist at the
+same tree position with the same bracket name (`countries/[slug].js` next to
+`countries/[slug]/visa-types/...` above is exactly that - one matches
+`/api/countries/:slug` exactly, the other matches anything deeper), but two
+*different* dynamic names at the same position is a hard build error. This
+tree originally had `countries/[slug].js` alongside
+`countries/[countrySlug]/visa-types/[visaTypeSlug].js` - same position,
+different names (`slug` vs `countrySlug`) - which fails the build with
+`Two or more files have conflicting paths or names`. If you add a route
+nested under an existing dynamic segment, reuse that segment's exact
+bracket name rather than picking a new one, even if a different name would
+read more clearly in isolation.
 
 Every one of these files has identical, trivial content - `export default
 createApp()` - because the actual routing logic still lives entirely in
