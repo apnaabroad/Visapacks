@@ -3,49 +3,38 @@ import { Link } from "react-router-dom";
 const currencyFormat = (amount, currency) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency }).format(amount);
 
-// Per-tier badge colors: Basic = taupe, Standard = cognac, Premium = burgundy.
-const TIER_BADGE_STYLES = {
-  BASIC: "bg-taupe-500 text-ink",
-  STANDARD: "bg-cognac-600 text-white",
-  PREMIUM: "bg-primary-600 text-white",
-};
-
 export default function PackageCard({ pkg }) {
+  const isPremium = pkg.tier === "PREMIUM";
+  const mutedText = isPremium ? "text-dusty-rose" : "text-warm-gray";
+
   return (
     <div
-      className={`relative flex flex-col rounded-2xl border bg-white p-6 ${
-        pkg.popular ? "border-accent-500 shadow-xl shadow-accent-100 sm:scale-105" : "border-line"
+      className={`flex flex-col border p-8 ${
+        isPremium ? "bg-ink border-ink text-ivory" : "bg-ivory border-hairline text-ink"
       }`}
     >
-      {pkg.popular && (
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent-600 px-3 py-1 text-xs font-semibold text-white">
-          Most popular
-        </span>
-      )}
-      <span
-        className={`self-start rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide ${TIER_BADGE_STYLES[pkg.tier] ?? "bg-taupe-500 text-ink"}`}
-      >
-        {pkg.tier}
-      </span>
-      <h3 className="mt-3 text-lg font-bold text-ink">{pkg.name}</h3>
-      <p className="mt-1 text-sm text-ink-muted">{pkg.tagline}</p>
+      <p className="text-xs font-semibold uppercase tracking-wide">
+        <span className={mutedText}>{pkg.tier}</span>
+        {pkg.popular && !isPremium && <span className="text-burgundy"> · Most popular</span>}
+      </p>
 
-      <p className="mt-6 flex items-baseline gap-1">
-        <span className="text-3xl font-extrabold text-ink">
+      <h3 className="mt-3 text-xl font-bold tracking-tight">{pkg.name}</h3>
+      <p className={`mt-1 text-sm ${mutedText}`}>{pkg.tagline}</p>
+
+      <p className="mt-8 flex items-baseline gap-1">
+        <span className="text-4xl font-bold tracking-tight">
           {currencyFormat(pkg.price, pkg.currency)}
         </span>
-        <span className="text-sm text-ink-faint">/ application</span>
+        <span className={`text-sm ${mutedText}`}>/ application</span>
       </p>
       {pkg.turnaround && (
-        <p className="mt-1 text-xs font-medium uppercase tracking-wide text-cognac-600">
-          {pkg.turnaround}
-        </p>
+        <p className={`mt-1 text-xs font-medium uppercase tracking-wide ${mutedText}`}>{pkg.turnaround}</p>
       )}
 
-      <ul className="mt-6 flex-1 space-y-3 text-sm text-ink-muted">
+      <ul className="mt-8 flex-1 space-y-3 text-sm">
         {pkg.features.map((feature) => (
-          <li key={feature} className="flex items-start gap-2">
-            <span className="mt-0.5 text-cognac-600">✓</span>
+          <li key={feature} className="flex items-start gap-3">
+            <span className={mutedText}>—</span>
             <span>{feature}</span>
           </li>
         ))}
@@ -53,7 +42,11 @@ export default function PackageCard({ pkg }) {
 
       <Link
         to={`/checkout/${pkg.id}`}
-        className="mt-8 block rounded-lg bg-accent-600 px-4 py-2.5 text-center text-sm font-semibold text-white transition-colors hover:bg-accent-700"
+        className={`mt-10 block px-4 py-3 text-center text-sm font-semibold transition-colors ${
+          isPremium
+            ? "bg-ivory text-ink hover:bg-burgundy hover:text-ivory"
+            : "bg-ink text-ivory hover:bg-burgundy"
+        }`}
       >
         Choose {pkg.name}
       </Link>

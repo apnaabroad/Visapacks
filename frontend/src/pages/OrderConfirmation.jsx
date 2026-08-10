@@ -26,28 +26,30 @@ export default function OrderConfirmation() {
   return (
     <div className="mx-auto max-w-xl px-4 sm:px-6 py-16 text-center">
       <p className="text-5xl">🎉</p>
-      <h1 className="mt-4 text-3xl font-extrabold text-ink">You're all set, {order.customerName.split(" ")[0]}!</h1>
-      <p className="mt-2 text-ink-muted">
+      <h1 className="mt-4 text-3xl font-bold tracking-tight text-ink">
+        You're all set, {order.customerName.split(" ")[0]}!
+      </h1>
+      <p className="mt-2 text-warm-gray">
         Your {order.package.name} package for{" "}
-        <strong>
+        <strong className="text-ink">
           {order.package.visaType.country.flagEmoji} {order.package.visaType.name}
         </strong>{" "}
-        is confirmed. We've sent details to <strong>{order.email}</strong>.
+        is confirmed. We've sent details to <strong className="text-ink">{order.email}</strong>.
       </p>
 
-      <div className="mt-8 rounded-2xl border border-line bg-cream-100 p-6 text-left">
+      <div className="mt-8 border border-hairline p-6 text-left">
         <div className="flex items-center justify-between text-sm">
-          <span className="text-ink-muted">Order number</span>
+          <span className="text-warm-gray">Order number</span>
           <span className="font-mono font-semibold text-ink">{order.orderNumber}</span>
         </div>
         <div className="mt-3 flex items-center justify-between text-sm">
-          <span className="text-ink-muted">Status</span>
-          <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-700">
+          <span className="text-warm-gray">Status</span>
+          <span className="border border-hairline px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-ink">
             {order.status}
           </span>
         </div>
         <div className="mt-3 flex items-center justify-between text-sm">
-          <span className="text-ink-muted">Amount</span>
+          <span className="text-warm-gray">Amount</span>
           <span className="font-semibold text-ink">
             {currencyFormat(order.amount, order.currency)}
           </span>
@@ -56,7 +58,7 @@ export default function OrderConfirmation() {
 
       <Link
         to="/"
-        className="mt-8 inline-block rounded-lg bg-accent-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-700 transition-colors"
+        className="mt-8 inline-block bg-ink px-5 py-2.5 text-sm font-semibold text-ivory hover:bg-burgundy transition-colors"
       >
         Browse more destinations
       </Link>

@@ -1,53 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  /* Primary - Deep Burgundy: header/nav/footer chrome, hero emphasis, premium tier */
-  --color-primary-50: #f7eaea;
-  --color-primary-100: #eed0d0;
-  --color-primary-200: #dda8a8;
-  --color-primary-500: #7a2e2e;
-  --color-primary-600: #5c1a1a;
-  --color-primary-700: #471414;
-  --color-primary-900: #2e0d0d;
+  /* Ink Black - primary text, headings, default button fill */
+  --color-ink: #161616;
 
-  /* Accent - Rich Terracotta: CTA buttons, popular-tier highlight */
-  --color-accent-50: #fbeee8;
-  --color-accent-100: #f5d6c6;
-  --color-accent-200: #e9af8d;
-  --color-accent-500: #c36a46;
-  --color-accent-600: #b5502e;
-  --color-accent-700: #954023;
-  --color-accent-900: #5f2916;
+  /* Warm Ivory - page background, text-on-dark */
+  --color-ivory: #fbf9f6;
 
-  /* Cognac - links, secondary buttons, standard tier badge */
-  --color-cognac-50: #f6efe8;
-  --color-cognac-100: #ead9c3;
-  --color-cognac-200: #d6b68c;
-  --color-cognac-500: #9c7047;
-  --color-cognac-600: #8b5e3c;
-  --color-cognac-700: #6e4a2f;
+  /* Burgundy - accent, used sparingly: CTA hover, premium tier, small highlights */
+  --color-burgundy: #7a1f2b;
 
-  /* Taupe - basic tier badge */
-  --color-taupe-100: #ede7df;
-  --color-taupe-300: #c9baa9;
-  --color-taupe-500: #a89684;
-  --color-taupe-700: #7d6f60;
+  /* Warm Gray - secondary/muted text */
+  --color-warm-gray: #8a857d;
 
-  /* Warm cream/ivory background */
-  --color-cream: #faf6f0;
-  --color-cream-100: #f1e7d9;
+  /* Hairline - 1px borders/dividers, never shadows */
+  --color-hairline: #e9e4dc;
 
-  /* Neutral warm border/divider tone */
-  --color-line: #e7dacb;
-
-  /* Warm charcoal-brown ink for headings and body text */
-  --color-ink: #4a3b35;
-  --color-ink-muted: #6b5a52;
-  --color-ink-faint: #9c897e;
+  /* Dusty Rose - premium tier badge/text on the dark Premium card */
+  --color-dusty-rose: #c9958c;
 }
 
 body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  background-color: var(--color-cream);
+  background-color: var(--color-ivory);
   color: var(--color-ink);
 }

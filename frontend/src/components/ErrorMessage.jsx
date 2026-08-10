@@ -7,7 +7,7 @@ export default function ErrorMessage({ message = "Something went wrong." }) {
       <p className="text-ink font-medium">{message}</p>
       <Link
         to="/"
-        className="mt-6 inline-block text-cognac-600 hover:text-cognac-700 font-medium text-sm"
+        className="mt-6 inline-block text-ink hover:text-burgundy font-medium text-sm transition-colors"
       >
         ← Back to home
       </Link>

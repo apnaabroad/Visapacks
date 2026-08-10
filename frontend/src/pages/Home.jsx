@@ -19,20 +19,28 @@ export default function Home() {
   return (
     <div>
       <section className="mx-auto max-w-6xl px-4 sm:px-6 pt-16 pb-12 text-center">
-        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-ink">
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-[-0.03em] text-ink">
           Apply for your visa yourself.
           <br />
-          <span className="text-primary-600">We'll guide every step.</span>
+          <span className="text-burgundy">We'll guide every step.</span>
         </h1>
-        <p className="mt-5 max-w-2xl mx-auto text-lg text-ink-muted">
+        <p className="mt-5 max-w-2xl mx-auto text-lg text-warm-gray">
           Pick your destination and visa type, choose a package that matches how much
           help you want, and get a clear checklist, expert review, or full 1-on-1
           support - all without an agent filing on your behalf.
         </p>
+
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs uppercase tracking-wide text-warm-gray">
+          <span>8 countries supported</span>
+          <span aria-hidden="true">·</span>
+          <span>Not a government agency</span>
+          <span aria-hidden="true">·</span>
+          <span>You file, we guide</span>
+        </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-24">
-        <h2 className="text-xl font-bold text-ink mb-6">Choose a destination</h2>
+        <h2 className="text-xl font-bold tracking-tight text-ink mb-6">Choose a destination</h2>
 
         {error && <ErrorMessage message={error} />}
         {!error && !countries && <Loading label="Loading countries..." />}
@@ -45,31 +53,29 @@ export default function Home() {
         )}
       </section>
 
-      <section id="how-it-works" className="border-t border-line bg-cream-100">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 grid gap-8 sm:grid-cols-3">
+      <section id="how-it-works" className="border-t border-hairline">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-20 grid gap-10 sm:grid-cols-3">
           {[
             {
-              step: "1",
+              step: "01",
               title: "Pick country & visa type",
               body: "Browse popular destinations and select the visa category that matches your trip.",
             },
             {
-              step: "2",
+              step: "02",
               title: "Choose your package",
               body: "Basic for a DIY checklist, Standard for expert review, or Premium for full 1-on-1 guidance.",
             },
             {
-              step: "3",
+              step: "03",
               title: "Apply with confidence",
               body: "You submit your own application - we make sure it's complete, accurate, and on time.",
             },
           ].map((item) => (
-            <div key={item.step}>
-              <div className="h-10 w-10 rounded-full bg-accent-600 text-white flex items-center justify-center font-bold">
-                {item.step}
-              </div>
-              <h3 className="mt-4 font-semibold text-ink">{item.title}</h3>
-              <p className="mt-2 text-sm text-ink-muted">{item.body}</p>
+            <div key={item.step} className="border-t border-hairline pt-6">
+              <p className="text-sm font-semibold text-burgundy">{item.step}</p>
+              <h3 className="mt-3 font-semibold tracking-tight text-ink">{item.title}</h3>
+              <p className="mt-2 text-sm text-warm-gray">{item.body}</p>
             </div>
           ))}
         </div>

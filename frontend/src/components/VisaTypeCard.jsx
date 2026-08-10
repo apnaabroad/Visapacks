@@ -4,15 +4,13 @@ export default function VisaTypeCard({ countrySlug, visaType }) {
   return (
     <Link
       to={`/countries/${countrySlug}/${visaType.slug}`}
-      className="group flex items-center justify-between rounded-xl border border-line bg-white p-5 transition-all hover:border-cognac-200 hover:shadow-md"
+      className="group flex items-center justify-between border border-hairline bg-ivory p-5 transition-colors hover:border-ink"
     >
       <div>
-        <h3 className="font-semibold text-ink group-hover:text-cognac-700 transition-colors">
-          {visaType.name}
-        </h3>
-        <p className="mt-1 text-sm text-ink-muted">{visaType.description}</p>
+        <h3 className="font-semibold tracking-tight text-ink">{visaType.name}</h3>
+        <p className="mt-1 text-sm text-warm-gray">{visaType.description}</p>
       </div>
-      <span className="text-cognac-600 text-lg shrink-0 ml-4">→</span>
+      <span className="text-ink text-lg shrink-0 ml-4 group-hover:text-burgundy transition-colors">→</span>
     </Link>
   );
 }
