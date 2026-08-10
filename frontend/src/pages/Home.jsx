@@ -19,12 +19,12 @@ export default function Home() {
   return (
     <div>
       <section className="mx-auto max-w-6xl px-4 sm:px-6 pt-16 pb-12 text-center">
-        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900">
+        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-ink">
           Apply for your visa yourself.
           <br />
-          <span className="text-brand-600">We'll guide every step.</span>
+          <span className="text-primary-600">We'll guide every step.</span>
         </h1>
-        <p className="mt-5 max-w-2xl mx-auto text-lg text-slate-600">
+        <p className="mt-5 max-w-2xl mx-auto text-lg text-ink-muted">
           Pick your destination and visa type, choose a package that matches how much
           help you want, and get a clear checklist, expert review, or full 1-on-1
           support - all without an agent filing on your behalf.
@@ -32,7 +32,7 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-24">
-        <h2 className="text-xl font-bold text-slate-900 mb-6">Choose a destination</h2>
+        <h2 className="text-xl font-bold text-ink mb-6">Choose a destination</h2>
 
         {error && <ErrorMessage message={error} />}
         {!error && !countries && <Loading label="Loading countries..." />}
@@ -45,7 +45,7 @@ export default function Home() {
         )}
       </section>
 
-      <section id="how-it-works" className="border-t border-slate-200 bg-slate-50">
+      <section id="how-it-works" className="border-t border-line bg-cream-100">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-16 grid gap-8 sm:grid-cols-3">
           {[
             {
@@ -65,11 +65,11 @@ export default function Home() {
             },
           ].map((item) => (
             <div key={item.step}>
-              <div className="h-10 w-10 rounded-full bg-brand-600 text-white flex items-center justify-center font-bold">
+              <div className="h-10 w-10 rounded-full bg-accent-600 text-white flex items-center justify-center font-bold">
                 {item.step}
               </div>
-              <h3 className="mt-4 font-semibold text-slate-900">{item.title}</h3>
-              <p className="mt-2 text-sm text-slate-600">{item.body}</p>
+              <h3 className="mt-4 font-semibold text-ink">{item.title}</h3>
+              <p className="mt-2 text-sm text-ink-muted">{item.body}</p>
             </div>
           ))}
         </div>

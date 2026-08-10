@@ -53,12 +53,12 @@ export default function Checkout() {
     <div className="mx-auto max-w-4xl px-4 sm:px-6 py-12">
       <Link
         to={`/countries/${pkg.visaType.country.slug}/${pkg.visaType.slug}`}
-        className="text-sm text-brand-600 hover:text-brand-700 font-medium"
+        className="text-sm text-cognac-600 hover:text-cognac-700 font-medium"
       >
         ← Back to packages
       </Link>
 
-      <h1 className="mt-4 text-3xl font-extrabold text-slate-900">Checkout</h1>
+      <h1 className="mt-4 text-3xl font-extrabold text-ink">Checkout</h1>
 
       <div className="mt-8 grid grid-cols-1 md:grid-cols-5 gap-8">
         <form onSubmit={handleSubmit} className="md:col-span-3 space-y-5">
@@ -84,7 +84,7 @@ export default function Checkout() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-ink mb-1">
               Anything we should know? (optional)
             </label>
             <textarea
@@ -92,7 +92,7 @@ export default function Checkout() {
               rows={4}
               value={form.notes}
               onChange={handleChange}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+              className="w-full rounded-lg border border-line px-3 py-2 text-sm focus:border-cognac-500 focus:outline-none focus:ring-1 focus:ring-cognac-500"
               placeholder="E.g. previous visa refusals, tight travel dates, dependents on the application..."
             />
           </div>
@@ -102,29 +102,29 @@ export default function Checkout() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-lg bg-brand-600 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60 transition-colors"
+            className="w-full rounded-lg bg-accent-600 px-4 py-3 text-sm font-semibold text-white hover:bg-accent-700 disabled:opacity-60 transition-colors"
           >
             {submitting ? "Placing order..." : `Confirm purchase - ${currencyFormat(pkg.price, pkg.currency)}`}
           </button>
-          <p className="text-xs text-slate-400 text-center">
+          <p className="text-xs text-ink-faint text-center">
             This is a demo checkout. No payment is collected; a payment provider can be
             plugged into the backend order flow later.
           </p>
         </form>
 
-        <aside className="md:col-span-2 h-fit rounded-2xl border border-slate-200 bg-slate-50 p-6">
-          <p className="text-xs font-medium uppercase tracking-wide text-brand-600">
+        <aside className="md:col-span-2 h-fit rounded-2xl border border-line bg-cream-100 p-6">
+          <p className="text-xs font-medium uppercase tracking-wide text-cognac-600">
             {pkg.visaType.country.flagEmoji} {pkg.visaType.country.name}
           </p>
-          <h2 className="mt-1 font-semibold text-slate-900">{pkg.visaType.name}</h2>
-          <div className="mt-4 flex items-center justify-between border-t border-slate-200 pt-4">
-            <span className="text-sm text-slate-600">{pkg.name} package</span>
-            <span className="font-bold text-slate-900">{currencyFormat(pkg.price, pkg.currency)}</span>
+          <h2 className="mt-1 font-semibold text-ink">{pkg.visaType.name}</h2>
+          <div className="mt-4 flex items-center justify-between border-t border-line pt-4">
+            <span className="text-sm text-ink-muted">{pkg.name} package</span>
+            <span className="font-bold text-ink">{currencyFormat(pkg.price, pkg.currency)}</span>
           </div>
-          <ul className="mt-4 space-y-2 text-sm text-slate-600">
+          <ul className="mt-4 space-y-2 text-sm text-ink-muted">
             {pkg.features.map((feature) => (
               <li key={feature} className="flex items-start gap-2">
-                <span className="mt-0.5 text-brand-600">✓</span>
+                <span className="mt-0.5 text-cognac-600">✓</span>
                 <span>{feature}</span>
               </li>
             ))}
@@ -138,7 +138,7 @@ export default function Checkout() {
 function Field({ label, name, type = "text", required, value, onChange }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-slate-700 mb-1">
+      <label className="block text-sm font-medium text-ink mb-1">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       <input
@@ -147,7 +147,7 @@ function Field({ label, name, type = "text", required, value, onChange }) {
         required={required}
         value={value}
         onChange={onChange}
-        className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        className="w-full rounded-lg border border-line px-3 py-2 text-sm focus:border-cognac-500 focus:outline-none focus:ring-1 focus:ring-cognac-500"
       />
     </div>
   );

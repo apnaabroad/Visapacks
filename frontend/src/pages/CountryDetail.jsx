@@ -25,22 +25,22 @@ export default function CountryDetail() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 sm:px-6 py-12">
-      <Link to="/" className="text-sm text-brand-600 hover:text-brand-700 font-medium">
+      <Link to="/" className="text-sm text-cognac-600 hover:text-cognac-700 font-medium">
         ← All countries
       </Link>
 
       <div className="mt-4 flex items-center gap-4">
         <span className="text-5xl">{country.flagEmoji}</span>
         <div>
-          <h1 className="text-3xl font-extrabold text-slate-900">{country.name}</h1>
-          <p className="text-slate-500">{country.summary}</p>
+          <h1 className="text-3xl font-extrabold text-ink">{country.name}</h1>
+          <p className="text-ink-muted">{country.summary}</p>
         </div>
       </div>
 
-      <h2 className="mt-10 text-lg font-bold text-slate-900">Select a visa type</h2>
+      <h2 className="mt-10 text-lg font-bold text-ink">Select a visa type</h2>
       <div className="mt-4 space-y-3">
         {country.visaTypes.length === 0 && (
-          <p className="text-slate-500 text-sm">No visa types are available for this country yet.</p>
+          <p className="text-ink-muted text-sm">No visa types are available for this country yet.</p>
         )}
         {country.visaTypes.map((visaType) => (
           <VisaTypeCard key={visaType.id} countrySlug={country.slug} visaType={visaType} />

@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
-    <footer className="border-t border-slate-200 mt-24">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10 text-sm text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <footer className="bg-primary-600 mt-24">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10 text-sm text-primary-100 flex flex-col sm:flex-row items-center justify-between gap-4">
         <p>© {new Date().getFullYear()} VisaPacks. We help you self-apply, not a government agency.</p>
         <p>Not affiliated with any embassy, consulate, or immigration authority.</p>
       </div>

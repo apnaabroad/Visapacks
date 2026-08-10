@@ -11,7 +11,7 @@ import VisaTypeDetail from "./pages/VisaTypeDetail.jsx";
 
 export default function App() {
   return (
-    <div className="min-h-screen flex flex-col bg-white text-slate-900">
+    <div className="min-h-screen flex flex-col bg-cream text-ink">
       <Navbar />
       <main className="flex-1">
         <Routes>
