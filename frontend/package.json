@@ -24,6 +24,7 @@
     "eslint-plugin-react": "^7.37.3",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.16",
+    "flag-icons": "^7.5.0",
     "tailwindcss": "^4.0.0",
     "vite": "^6.0.7"
   }

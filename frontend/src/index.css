@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./flags.css";
 
 @theme {
   /* Ink Black - primary text, headings, default button fill */

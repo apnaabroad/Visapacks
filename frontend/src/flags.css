@@ -1,0 +1,48 @@
+/* Minimal flag-icon CSS: only the 8 launch countries, not the ~250-country
+   flag-icons package default (which was adding ~420KB of unused CSS to
+   every page load). Same class names/behavior as flag-icons (.fi + .fi-xx),
+   so Flag.jsx doesn't need to know which approach is in use. To add a flag
+   for a new country, copy its SVG from
+   node_modules/flag-icons/flags/4x3/<code>.svg into src/assets/flags/ and
+   add one rule below. */
+
+.fi {
+  background-size: contain;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  position: relative;
+  display: inline-block;
+  width: 1.333333em;
+  /* Explicit height (4:3 to match the flag artwork), not just line-height -
+     several usages place this as a direct flex child (e.g. `flex items-center`
+     wrappers), and flex blockifies inline-block children (their computed
+     display becomes block per the CSS Display spec), which made the old
+     line-height-only sizing collapse to zero visible height there even
+     though it read fine in a plain inline-flow context. */
+  height: 1em;
+}
+
+.fi-us {
+  background-image: url("./assets/flags/us.svg");
+}
+.fi-gb {
+  background-image: url("./assets/flags/gb.svg");
+}
+.fi-ca {
+  background-image: url("./assets/flags/ca.svg");
+}
+.fi-eu {
+  background-image: url("./assets/flags/eu.svg");
+}
+.fi-au {
+  background-image: url("./assets/flags/au.svg");
+}
+.fi-ae {
+  background-image: url("./assets/flags/ae.svg");
+}
+.fi-de {
+  background-image: url("./assets/flags/de.svg");
+}
+.fi-nz {
+  background-image: url("./assets/flags/nz.svg");
+}

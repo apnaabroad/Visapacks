@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { getErrorMessage } from "../api/client.js";
 import { getVisaType } from "../api/visaPacks.js";
 import ErrorMessage from "../components/ErrorMessage.jsx";
+import Flag from "../components/Flag.jsx";
 import Loading from "../components/Loading.jsx";
 import PackageCard from "../components/PackageCard.jsx";
 
@@ -33,8 +34,9 @@ export default function VisaTypeDetail() {
       </Link>
 
       <div className="mt-4">
-        <h1 className="text-3xl font-bold tracking-tight text-ink">
-          {visaType.country.flagEmoji} {visaType.name}
+        <h1 className="flex items-center gap-3 text-3xl font-bold tracking-tight text-ink">
+          <Flag code={visaType.country.code} className="text-3xl" />
+          {visaType.name}
         </h1>
         <p className="mt-1 text-warm-gray max-w-2xl">{visaType.description}</p>
       </div>

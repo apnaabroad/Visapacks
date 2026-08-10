@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { getErrorMessage } from "../api/client.js";
 import { createOrder, getPackage } from "../api/visaPacks.js";
 import ErrorMessage from "../components/ErrorMessage.jsx";
+import Flag from "../components/Flag.jsx";
 import Loading from "../components/Loading.jsx";
 
 const currencyFormat = (amount, currency) =>
@@ -113,8 +114,9 @@ export default function Checkout() {
         </form>
 
         <aside className="md:col-span-2 h-fit border border-hairline p-6">
-          <p className="text-xs font-medium uppercase tracking-wide text-warm-gray">
-            {pkg.visaType.country.flagEmoji} {pkg.visaType.country.name}
+          <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-warm-gray">
+            <Flag code={pkg.visaType.country.code} />
+            {pkg.visaType.country.name}
           </p>
           <h2 className="mt-1 font-semibold tracking-tight text-ink">{pkg.visaType.name}</h2>
           <div className="mt-4 flex items-center justify-between border-t border-hairline pt-4">

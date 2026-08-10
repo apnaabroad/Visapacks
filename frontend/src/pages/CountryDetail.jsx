@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { getErrorMessage } from "../api/client.js";
 import { getCountry } from "../api/visaPacks.js";
 import ErrorMessage from "../components/ErrorMessage.jsx";
+import Flag from "../components/Flag.jsx";
 import Loading from "../components/Loading.jsx";
 import VisaTypeCard from "../components/VisaTypeCard.jsx";
 
@@ -30,7 +31,7 @@ export default function CountryDetail() {
       </Link>
 
       <div className="mt-4 flex items-center gap-4">
-        <span className="text-5xl">{country.flagEmoji}</span>
+        <Flag code={country.code} className="text-5xl" />
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-ink">{country.name}</h1>
           <p className="text-warm-gray">{country.summary}</p>

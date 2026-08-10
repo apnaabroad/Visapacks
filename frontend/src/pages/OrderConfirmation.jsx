@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { getErrorMessage } from "../api/client.js";
 import { getOrder } from "../api/visaPacks.js";
 import ErrorMessage from "../components/ErrorMessage.jsx";
+import Flag from "../components/Flag.jsx";
 import Loading from "../components/Loading.jsx";
 
 const currencyFormat = (amount, currency) =>
@@ -32,7 +33,7 @@ export default function OrderConfirmation() {
       <p className="mt-2 text-warm-gray">
         Your {order.package.name} package for{" "}
         <strong className="text-ink">
-          {order.package.visaType.country.flagEmoji} {order.package.visaType.name}
+          <Flag code={order.package.visaType.country.code} /> {order.package.visaType.name}
         </strong>{" "}
         is confirmed. We've sent details to <strong className="text-ink">{order.email}</strong>.
       </p>
