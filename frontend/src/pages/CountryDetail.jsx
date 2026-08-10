@@ -6,6 +6,7 @@ import { getCountry } from "../api/visaPacks.js";
 import ErrorMessage from "../components/ErrorMessage.jsx";
 import Flag from "../components/Flag.jsx";
 import Loading from "../components/Loading.jsx";
+import Reveal from "../components/Reveal.jsx";
 import VisaTypeCard from "../components/VisaTypeCard.jsx";
 
 export default function CountryDetail() {
@@ -30,21 +31,23 @@ export default function CountryDetail() {
         ← All countries
       </Link>
 
-      <div className="mt-4 flex items-center gap-4">
+      <Reveal className="mt-4 flex items-center gap-4">
         <Flag code={country.code} className="text-5xl" />
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-ink">{country.name}</h1>
           <p className="text-warm-gray">{country.summary}</p>
         </div>
-      </div>
+      </Reveal>
 
       <h2 className="mt-10 text-lg font-bold tracking-tight text-ink">Select a visa type</h2>
       <div className="mt-4 space-y-3">
         {country.visaTypes.length === 0 && (
           <p className="text-warm-gray text-sm">No visa types are available for this country yet.</p>
         )}
-        {country.visaTypes.map((visaType) => (
-          <VisaTypeCard key={visaType.id} countrySlug={country.slug} visaType={visaType} />
+        {country.visaTypes.map((visaType, index) => (
+          <Reveal key={visaType.id} delay={index * 60}>
+            <VisaTypeCard countrySlug={country.slug} visaType={visaType} />
+          </Reveal>
         ))}
       </div>
     </div>

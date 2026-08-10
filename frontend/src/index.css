@@ -26,3 +26,29 @@ body {
   background-color: var(--color-ivory);
   color: var(--color-ink);
 }
+
+/* Scroll-triggered fade-in-and-rise, used via the <Reveal> component.
+   Subtle and quick on purpose - this is a supporting detail, not the point
+   of the page. */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 350ms ease-out,
+    transform 350ms ease-out;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Belt-and-suspenders: even if the JS-side prefers-reduced-motion check in
+   useScrollReveal.js were ever bypassed, this guarantees content is never
+   left invisible and never animates for users who asked for reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

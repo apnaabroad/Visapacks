@@ -6,6 +6,7 @@ import { getOrder } from "../api/visaPacks.js";
 import ErrorMessage from "../components/ErrorMessage.jsx";
 import Flag from "../components/Flag.jsx";
 import Loading from "../components/Loading.jsx";
+import Reveal from "../components/Reveal.jsx";
 
 const currencyFormat = (amount, currency) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency }).format(amount);
@@ -26,19 +27,21 @@ export default function OrderConfirmation() {
 
   return (
     <div className="mx-auto max-w-xl px-4 sm:px-6 py-16 text-center">
-      <p className="text-5xl">🎉</p>
-      <h1 className="mt-4 text-3xl font-bold tracking-tight text-ink">
-        You're all set, {order.customerName.split(" ")[0]}!
-      </h1>
-      <p className="mt-2 text-warm-gray">
-        Your {order.package.name} package for{" "}
-        <strong className="text-ink">
-          <Flag code={order.package.visaType.country.code} /> {order.package.visaType.name}
-        </strong>{" "}
-        is confirmed. We've sent details to <strong className="text-ink">{order.email}</strong>.
-      </p>
+      <Reveal>
+        <p className="text-5xl">🎉</p>
+        <h1 className="mt-4 text-3xl font-bold tracking-tight text-ink">
+          You're all set, {order.customerName.split(" ")[0]}!
+        </h1>
+        <p className="mt-2 text-warm-gray">
+          Your {order.package.name} package for{" "}
+          <strong className="text-ink">
+            <Flag code={order.package.visaType.country.code} /> {order.package.visaType.name}
+          </strong>{" "}
+          is confirmed. We've sent details to <strong className="text-ink">{order.email}</strong>.
+        </p>
+      </Reveal>
 
-      <div className="mt-8 border border-hairline p-6 text-left">
+      <Reveal delay={100} className="mt-8 border border-hairline p-6 text-left">
         <div className="flex items-center justify-between text-sm">
           <span className="text-warm-gray">Order number</span>
           <span className="font-mono font-semibold text-ink">{order.orderNumber}</span>
@@ -55,14 +58,16 @@ export default function OrderConfirmation() {
             {currencyFormat(order.amount, order.currency)}
           </span>
         </div>
-      </div>
+      </Reveal>
 
-      <Link
-        to="/"
-        className="mt-8 inline-block bg-ink px-5 py-2.5 text-sm font-semibold text-ivory hover:bg-burgundy transition-colors"
-      >
-        Browse more destinations
-      </Link>
+      <Reveal delay={160}>
+        <Link
+          to="/"
+          className="mt-8 inline-block bg-ink px-5 py-2.5 text-sm font-semibold text-ivory hover:bg-burgundy transition-colors"
+        >
+          Browse more destinations
+        </Link>
+      </Reveal>
     </div>
   );
 }

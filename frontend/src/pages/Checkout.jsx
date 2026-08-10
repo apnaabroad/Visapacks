@@ -6,6 +6,7 @@ import { createOrder, getPackage } from "../api/visaPacks.js";
 import ErrorMessage from "../components/ErrorMessage.jsx";
 import Flag from "../components/Flag.jsx";
 import Loading from "../components/Loading.jsx";
+import Reveal from "../components/Reveal.jsx";
 
 const currencyFormat = (amount, currency) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency }).format(amount);
@@ -59,10 +60,12 @@ export default function Checkout() {
         ← Back to packages
       </Link>
 
-      <h1 className="mt-4 text-3xl font-bold tracking-tight text-ink">Checkout</h1>
+      <Reveal as="h1" className="mt-4 text-3xl font-bold tracking-tight text-ink">
+        Checkout
+      </Reveal>
 
       <div className="mt-8 grid grid-cols-1 md:grid-cols-5 gap-8">
-        <form onSubmit={handleSubmit} className="md:col-span-3 space-y-5">
+        <Reveal as="form" onSubmit={handleSubmit} className="md:col-span-3 space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Full name" name="customerName" required value={form.customerName} onChange={handleChange} />
             <Field
@@ -111,9 +114,9 @@ export default function Checkout() {
             This is a demo checkout. No payment is collected; a payment provider can be
             plugged into the backend order flow later.
           </p>
-        </form>
+        </Reveal>
 
-        <aside className="md:col-span-2 h-fit border border-hairline p-6">
+        <Reveal as="aside" delay={80} className="md:col-span-2 h-fit border border-hairline p-6">
           <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-warm-gray">
             <Flag code={pkg.visaType.country.code} />
             {pkg.visaType.country.name}
@@ -131,7 +134,7 @@ export default function Checkout() {
               </li>
             ))}
           </ul>
-        </aside>
+        </Reveal>
       </div>
     </div>
   );
