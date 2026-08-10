@@ -192,11 +192,40 @@ below for why only paths under `/api/*` are guaranteed to reach the app there.)
 
 - **Root Directory**: `frontend`
 - **Framework Preset**: Vite (auto-detected)
-- **Environment Variables**: add `VITE_API_URL` = `https://<your-backend-url-from-step-3>/api`
+- **Environment Variables**: add `VITE_API_URL` = `https://<your-backend-url-from-step-3>/api`,
+  and optionally `VITE_UNSPLASH_ACCESS_KEY` (see [Destination photos](#destination-photos) below)
 - Click **Deploy**
 
 When it finishes, the resulting URL (e.g. `https://visapacks-frontend.vercel.app`)
 is your public site - open it in a browser.
+
+### Destination photos
+
+Country cards and the country detail page banner can show a representative
+destination photo, fetched from [Unsplash](https://unsplash.com/developers).
+This is entirely optional - without a key, those spots are simply skipped
+(no broken images, the flag and text carry the design on their own).
+
+To enable it: create a free Unsplash app at
+[unsplash.com/developers](https://unsplash.com/developers), copy its
+**Access Key**, and set `VITE_UNSPLASH_ACCESS_KEY` in `frontend/.env`
+locally and/or as a frontend project environment variable on Vercel.
+
+A few things worth knowing about how this is built (`frontend/src/hooks/useCountryImage.js`):
+
+- It's a **client-side** integration - the access key ships in the frontend
+  bundle (that's what the `VITE_` prefix means: anyone can extract it from
+  built JS). Unsplash's free "Demo" tier is capped at 50 requests/hour,
+  which is fine for a low-traffic site but will get exhausted quickly under
+  real load; request Unsplash's "Production" tier (5,000/hour) before
+  relying on this for a site with meaningful traffic, or move the fetch
+  behind a small backend endpoint if you'd rather not expose the key at all.
+- Each result is cached in the visitor's `localStorage` for 30 days, so a
+  returning visitor doesn't re-fetch on every page load - only network
+  failures or a first-time visit hit the API.
+- Search queries per country live in `frontend/src/data/countryImageQueries.js`;
+  add an entry there for any new country, or it falls back to a generic
+  `"<name> landmark skyline"` query.
 
 ### 5. (Optional) Lock down CORS
 

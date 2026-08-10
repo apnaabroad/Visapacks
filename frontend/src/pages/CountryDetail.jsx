@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 
 import { getErrorMessage } from "../api/client.js";
 import { getCountry } from "../api/visaPacks.js";
+import CountryImage from "../components/CountryImage.jsx";
 import ErrorMessage from "../components/ErrorMessage.jsx";
 import Flag from "../components/Flag.jsx";
 import Loading from "../components/Loading.jsx";
@@ -30,6 +31,10 @@ export default function CountryDetail() {
       <Link to="/" className="text-sm text-ink hover:text-burgundy font-medium transition-colors">
         ← All countries
       </Link>
+
+      <Reveal className="mt-4">
+        <CountryImage country={country} variant="banner" />
+      </Reveal>
 
       <Reveal className="mt-4 flex items-center gap-4">
         <Flag code={country.code} className="text-5xl" />
