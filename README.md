@@ -8,8 +8,9 @@ customers always apply themselves).
 ## Stack
 
 - **Frontend**: React 18 + Vite + React Router + Tailwind CSS v4
-- **Backend**: Node.js + Express (runs as a normal server locally, and as a
-  Vercel Serverless Function in production - see `backend/api/[...path].js`)
+- **Backend**: Node.js + Express (runs as a normal server locally, and as
+  Vercel Serverless Functions in production - see `backend/api/`, and the
+  troubleshooting note below on why it's several small files rather than one)
 - **Database**: Postgres via Prisma ORM
 
 ## Project structure
@@ -17,8 +18,8 @@ customers always apply themselves).
 ```
 Visapacks/
 ├── backend/
-│   ├── api/
-│   │   └── [...path].js       # Vercel Serverless Function - matches all of /api/* natively
+│   ├── api/                   # One Vercel Serverless Function file per route shape - see
+│   │                          # the "Troubleshooting" section below for why
 │   ├── prisma/
 │   │   ├── schema.prisma      # Country, VisaType, Package, Order models
 │   │   └── seed.js            # Seeds the 8 launch countries - see "Adding a country"
@@ -218,27 +219,61 @@ independent domains and something else is stricter about matching, you can
 still list them both explicitly, comma-separated:
 `https://visapacks.com,https://www.visapacks.com`.
 
-### Troubleshooting: `/api/*` routes 404 but `/` doesn't
+### Troubleshooting: `/api/*` routes 404 but `/api/health` doesn't
 
 Vercel treats the `api/` directory as a reserved, filesystem-routed
 namespace: any request path starting with `/api/` is matched directly
 against files in that folder, natively - no `vercel.json` rewrite is
-involved or needed. That's why the Express entry point is named
-`backend/api/[...path].js` - Vercel's required catch-all filename convention
-(one or more path segments), which is reliably supported for plain
-Serverless Functions in general, not just Next.js apps (the double-bracket
-"optional" catch-all variant, `[[...path]].js`, is a Next.js routing
-convention and isn't guaranteed to behave the same way outside of it - an
-earlier version of this file used that spelling and it did not correctly
-route nested paths like `/api/countries/united-states`). Every route this
-app actually serves has at least one segment under `/api` (`/api/countries`,
-`/api/orders`, etc.), so the required catch-all covers all of them; only a
-literal bare `/api` would need the optional variant, and nothing here calls
-that. This is also why the health check lives at `/api/health` rather than
-bare `/health` - only paths under `/api/*` are guaranteed to reach the app
-on Vercel without extra routing config. If you ever rename or restructure
-that file, keep it (or an equivalent required catch-all) directly inside
-`backend/api/`, or every `/api/*` route will 404 again.
+involved or needed.
+
+Two earlier versions of this backend tried to serve every route from a
+single catch-all file - first `backend/api/[[...path]].js` (Next.js's
+"optional catch-all" convention), then `backend/api/[...path].js` (the
+"required" variant, one-or-more segments). Both looked correct on paper and
+matched Vercel's documented dynamic-segment syntax, but in production
+neither one reliably matched paths with more than one segment: a one-segment
+path like `/api/health` worked, while a two-segment path like
+`/api/countries/united-states` still 404'd on the exact same deployment -
+this was confirmed directly (browser network tab, not just reasoning) before
+landing on the current approach. In other words, the "rest parameter" (`...`)
+semantics that make catch-all files work throughout Next.js did not reliably
+extend to plain Serverless Functions here.
+
+The fix that actually worked: give up on wildcard/catch-all matching
+entirely and add one small file per real route shape, using only literal
+filenames and single-segment `[param].js` dynamic segments (never `...`) -
+the most basic Vercel routing primitive there is, with no ambiguity about
+how many segments it captures:
+
+```
+backend/api/
+├── health.js                                        → GET  /api/health
+├── countries/
+│   ├── index.js                                      → GET  /api/countries
+│   ├── [slug].js                                      → GET  /api/countries/:slug
+│   └── [countrySlug]/visa-types/[visaTypeSlug].js      → GET  /api/countries/:countrySlug/visa-types/:visaTypeSlug
+├── packages/
+│   └── [id].js                                        → GET  /api/packages/:id
+└── orders/
+    ├── index.js                                       → POST /api/orders
+    └── [id].js                                        → GET  /api/orders/:id
+```
+
+Every one of these files has identical, trivial content - `export default
+createApp()` - because the actual routing logic still lives entirely in
+Express (`backend/src/app.js` and `backend/src/routes/`), which correctly
+sees the true request path regardless of which physical file Vercel used to
+select the function. The shim files exist purely so Vercel's own router has
+an unambiguous, single-segment-at-a-time file to match against for every
+path shape the app needs - nothing here depends on multi-segment wildcard
+behavior anymore.
+
+If you add a new nested route to the Express app, add a matching shim file
+under `backend/api/` following the same pattern, or that route will 404 in
+production even though it works locally (`npm run dev` doesn't go through
+Vercel's file-based routing at all, so this class of bug is invisible until
+you deploy - test new routes against a real Vercel deployment before
+assuming they work).
 
 ### Local dev after switching to a hosted database
 
