@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 
 import { getCountries } from "../api/visaPacks.js";
+import ArcPathSection from "../components/ArcPathSection.jsx";
 import CountryCard from "../components/CountryCard.jsx";
 import ErrorMessage from "../components/ErrorMessage.jsx";
 import Loading from "../components/Loading.jsx";
+import OrbitingFlags from "../components/OrbitingFlags.jsx";
 import Reveal from "../components/Reveal.jsx";
+import ScrollTagline from "../components/ScrollTagline.jsx";
 import { getErrorMessage } from "../api/client.js";
 
 export default function Home() {
@@ -19,8 +22,9 @@ export default function Home() {
 
   return (
     <div>
-      <section className="hero-glow">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-20 sm:pt-28 pb-16 text-center">
+      <section className="hero-glow relative">
+        <OrbitingFlags />
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 pt-20 sm:pt-28 pb-16 text-center">
           <Reveal>
             <h1 className="text-5xl sm:text-6xl font-bold tracking-[-0.03em] text-ink">
               Apply for your visa yourself.
@@ -47,7 +51,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-28">
+      <ScrollTagline />
+
+      <section id="choose-destination" className="mx-auto max-w-6xl px-4 sm:px-6 pb-28">
         <Reveal as="h2" className="text-2xl font-bold tracking-tight text-ink mb-8">
           Choose a destination
         </Reveal>
@@ -101,6 +107,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <ArcPathSection />
     </div>
   );
 }
