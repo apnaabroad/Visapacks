@@ -23,31 +23,38 @@ export default function Home() {
   return (
     <div>
       <section className="hero-glow relative">
-        <OrbitingFlags />
-        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 pt-20 sm:pt-28 pb-16 text-center">
-          <Reveal>
-            <h1 className="text-5xl sm:text-6xl font-bold tracking-[-0.03em] text-ink">
-              Apply for your visa yourself.
-              <br />
-              <span className="text-burgundy">We'll guide every step.</span>
-            </h1>
-            <p className="mt-6 max-w-2xl mx-auto text-lg text-warm-gray">
-              Pick your destination and visa type, choose a package that matches how much
-              help you want, and get everything from a form walkthrough to a full toolkit
-              of templates and checklists - all without an agent filing on your behalf.
-            </p>
-          </Reveal>
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-20 sm:pt-28 pb-16">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="text-center md:text-left">
+              <Reveal>
+                <h1 className="text-5xl sm:text-6xl font-bold tracking-[-0.03em] text-ink">
+                  Apply for your visa yourself.
+                  <br />
+                  <span className="text-burgundy">We'll guide every step.</span>
+                </h1>
+                <p className="mt-6 max-w-2xl mx-auto md:mx-0 text-lg text-warm-gray">
+                  Pick your destination and visa type, choose a package that matches how much
+                  help you want, and get everything from a form walkthrough to a full toolkit
+                  of templates and checklists - all without an agent filing on your behalf.
+                </p>
+              </Reveal>
 
-          <Reveal
-            delay={100}
-            className="mt-8 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs uppercase tracking-wide text-warm-gray"
-          >
-            <span>8 countries supported</span>
-            <span aria-hidden="true">·</span>
-            <span>Not a government agency</span>
-            <span aria-hidden="true">·</span>
-            <span>You file, we guide</span>
-          </Reveal>
+              <Reveal
+                delay={100}
+                className="mt-8 flex flex-wrap items-center justify-center md:justify-start gap-x-2 gap-y-1 text-xs uppercase tracking-wide text-warm-gray"
+              >
+                <span>8 countries supported</span>
+                <span aria-hidden="true">·</span>
+                <span>Not a government agency</span>
+                <span aria-hidden="true">·</span>
+                <span>You file, we guide</span>
+              </Reveal>
+            </div>
+
+            <div className="hidden md:flex justify-center">
+              <OrbitingFlags />
+            </div>
+          </div>
         </div>
       </section>
 
