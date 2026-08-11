@@ -24,13 +24,13 @@ export default function OrderConfirmation() {
   if (!order) return <Loading label="Loading your order..." />;
 
   return (
-    <div className="mx-auto max-w-xl px-4 sm:px-6 py-16 text-center">
+    <div className="mx-auto max-w-xl px-4 sm:px-6 py-20 text-center">
       <Reveal>
         <p className="text-5xl">🎉</p>
-        <h1 className="mt-4 text-3xl font-bold tracking-tight text-ink">
+        <h1 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-ink">
           You're all set, {order.customerName.split(" ")[0]}!
         </h1>
-        <p className="mt-2 text-warm-gray">
+        <p className="mt-3 text-warm-gray">
           Your {order.package.name} package for{" "}
           <strong className="text-ink">
             <Flag code={order.package.visaType.country.code} /> {order.package.visaType.name}
@@ -39,7 +39,7 @@ export default function OrderConfirmation() {
         </p>
       </Reveal>
 
-      <Reveal delay={100} className="mt-8 border border-hairline p-6 text-left">
+      <Reveal delay={100} className="mt-10 border border-hairline bg-ivory p-6 text-left shadow-card">
         <div className="flex items-center justify-between text-sm">
           <span className="text-warm-gray">Order number</span>
           <span className="font-mono font-semibold text-ink">{order.orderNumber}</span>
@@ -61,7 +61,7 @@ export default function OrderConfirmation() {
       <Reveal delay={160}>
         <Link
           to="/"
-          className="mt-8 inline-block bg-ink px-5 py-2.5 text-sm font-semibold text-ivory hover:bg-burgundy transition-colors"
+          className="mt-10 inline-block bg-ink px-5 py-2.5 text-sm font-semibold text-ivory transition-all duration-200 hover:bg-burgundy hover:scale-[1.02] hover:shadow-lg"
         >
           Browse more destinations
         </Link>

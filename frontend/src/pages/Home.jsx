@@ -19,43 +19,45 @@ export default function Home() {
 
   return (
     <div>
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 pt-16 pb-12 text-center">
-        <Reveal>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-[-0.03em] text-ink">
-            Apply for your visa yourself.
-            <br />
-            <span className="text-burgundy">We'll guide every step.</span>
-          </h1>
-          <p className="mt-5 max-w-2xl mx-auto text-lg text-warm-gray">
-            Pick your destination and visa type, choose a package that matches how much
-            help you want, and get everything from a form walkthrough to a full toolkit
-            of templates and checklists - all without an agent filing on your behalf.
-          </p>
-        </Reveal>
+      <section className="hero-glow">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-20 sm:pt-28 pb-16 text-center">
+          <Reveal>
+            <h1 className="text-5xl sm:text-6xl font-bold tracking-[-0.03em] text-ink">
+              Apply for your visa yourself.
+              <br />
+              <span className="text-burgundy">We'll guide every step.</span>
+            </h1>
+            <p className="mt-6 max-w-2xl mx-auto text-lg text-warm-gray">
+              Pick your destination and visa type, choose a package that matches how much
+              help you want, and get everything from a form walkthrough to a full toolkit
+              of templates and checklists - all without an agent filing on your behalf.
+            </p>
+          </Reveal>
 
-        <Reveal
-          delay={100}
-          className="mt-8 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs uppercase tracking-wide text-warm-gray"
-        >
-          <span>8 countries supported</span>
-          <span aria-hidden="true">·</span>
-          <span>Not a government agency</span>
-          <span aria-hidden="true">·</span>
-          <span>You file, we guide</span>
-        </Reveal>
+          <Reveal
+            delay={100}
+            className="mt-8 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs uppercase tracking-wide text-warm-gray"
+          >
+            <span>8 countries supported</span>
+            <span aria-hidden="true">·</span>
+            <span>Not a government agency</span>
+            <span aria-hidden="true">·</span>
+            <span>You file, we guide</span>
+          </Reveal>
+        </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-24">
-        <Reveal as="h2" className="text-xl font-bold tracking-tight text-ink mb-6">
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-28">
+        <Reveal as="h2" className="text-2xl font-bold tracking-tight text-ink mb-8">
           Choose a destination
         </Reveal>
 
         {error && <ErrorMessage message={error} />}
         {!error && !countries && <Loading label="Loading countries..." />}
         {!error && countries && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {countries.map((country, index) => (
-              <Reveal key={country.id} delay={(index % 4) * 60}>
+              <Reveal key={country.id} delay={index * 70} className="h-full">
                 <CountryCard country={country} />
               </Reveal>
             ))}
@@ -63,31 +65,40 @@ export default function Home() {
         )}
       </section>
 
-      <section id="how-it-works" className="border-t border-hairline">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-20 grid gap-10 sm:grid-cols-3">
-          {[
-            {
-              step: "01",
-              title: "Pick country & visa type",
-              body: "Browse popular destinations and select the visa category that matches your trip.",
-            },
-            {
-              step: "02",
-              title: "Choose your package",
-              body: "Starter for the essentials, Essential for the master guide, Complete for every template, or Premium for the full toolkit.",
-            },
-            {
-              step: "03",
-              title: "Apply with confidence",
-              body: "You submit your own application - we make sure it's complete, accurate, and on time.",
-            },
-          ].map((item, index) => (
-            <Reveal key={item.step} delay={index * 80} className="border-t border-hairline pt-6">
-              <p className="text-sm font-semibold text-burgundy">{item.step}</p>
-              <h3 className="mt-3 font-semibold tracking-tight text-ink">{item.title}</h3>
-              <p className="mt-2 text-sm text-warm-gray">{item.body}</p>
-            </Reveal>
-          ))}
+      <section id="how-it-works" className="border-t border-hairline bg-ivory">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-24">
+          <Reveal as="h2" className="text-2xl font-bold tracking-tight text-ink mb-10">
+            How it works
+          </Reveal>
+          <div className="grid gap-6 sm:grid-cols-3">
+            {[
+              {
+                step: "01",
+                title: "Pick country & visa type",
+                body: "Browse popular destinations and select the visa category that matches your trip.",
+              },
+              {
+                step: "02",
+                title: "Choose your package",
+                body: "Starter for the essentials, Essential for the master guide, Complete for every template, or Premium for the full toolkit.",
+              },
+              {
+                step: "03",
+                title: "Apply with confidence",
+                body: "You submit your own application - we make sure it's complete, accurate, and on time.",
+              },
+            ].map((item, index) => (
+              <Reveal
+                key={item.step}
+                delay={index * 90}
+                className="h-full border border-hairline bg-ivory p-7 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover"
+              >
+                <p className="text-sm font-semibold text-burgundy">{item.step}</p>
+                <h3 className="mt-3 text-lg font-semibold tracking-tight text-ink">{item.title}</h3>
+                <p className="mt-2 text-sm text-warm-gray">{item.body}</p>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
     </div>

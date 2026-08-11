@@ -27,29 +27,29 @@ export default function VisaTypeDetail() {
   if (!visaType) return <Loading label="Loading packages..." />;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-14">
       <Link
         to={`/countries/${countrySlug}`}
-        className="text-sm text-ink hover:text-burgundy font-medium transition-colors"
+        className="text-sm text-ink hover:text-burgundy font-medium transition-colors duration-200"
       >
         ← {visaType.country.name}
       </Link>
 
       <Reveal className="mt-4">
-        <h1 className="flex items-center gap-3 text-3xl font-bold tracking-tight text-ink">
+        <h1 className="flex items-center gap-3 text-3xl sm:text-4xl font-bold tracking-tight text-ink">
           <Flag code={visaType.country.code} className="text-3xl" />
           {visaType.name}
         </h1>
-        <p className="mt-1 text-warm-gray max-w-2xl">{visaType.description}</p>
+        <p className="mt-2 text-warm-gray max-w-2xl">{visaType.description}</p>
       </Reveal>
 
       {visaType.packages.length === 0 ? (
         <p className="mt-10 text-warm-gray text-sm">No packages are available for this visa type yet.</p>
       ) : (
         <>
-          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-5">
             {visaType.packages.map((pkg, index) => (
-              <Reveal key={pkg.id} delay={index * 80} className="h-full">
+              <Reveal key={pkg.id} delay={index * 90} className="h-full">
                 <PackageCard pkg={pkg} />
               </Reveal>
             ))}

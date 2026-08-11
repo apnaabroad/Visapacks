@@ -14,17 +14,55 @@
   /* Warm Gray - secondary/muted text */
   --color-warm-gray: #8a857d;
 
-  /* Hairline - 1px borders/dividers, never shadows */
+  /* Hairline - 1px borders/dividers, paired with shadows for depth, not a
+     replacement for them */
   --color-hairline: #e9e4dc;
 
   /* Dusty Rose - premium tier badge/text on the dark Premium card */
   --color-dusty-rose: #c9958c;
+
+  /* Layered card shadows - soft and diffuse, never a hard drop shadow.
+     Registering these under --shadow-* makes Tailwind generate matching
+     shadow-card / shadow-card-hover / shadow-elevated / shadow-nav utilities. */
+  --shadow-card: 0 4px 20px rgba(22, 22, 22, 0.06);
+  --shadow-card-hover: 0 10px 30px rgba(22, 22, 22, 0.1);
+  --shadow-elevated: 0 20px 45px rgba(22, 22, 22, 0.16);
+  --shadow-nav: 0 2px 10px rgba(22, 22, 22, 0.04);
 }
 
 body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   background-color: var(--color-ivory);
   color: var(--color-ink);
+}
+
+/* Very subtle warmth behind the hero - not a visible gradient band, just
+   enough to keep the top of the page from feeling like flat white. */
+.hero-glow {
+  background-image: radial-gradient(ellipse 90% 55% at 50% -10%, rgba(122, 31, 43, 0.05), transparent 70%),
+    radial-gradient(ellipse 70% 50% at 50% 0%, #f7ede1 0%, var(--color-ivory) 65%);
+}
+
+/* Fade + gentle scale-in for destination photos once they've loaded, instead
+   of an abrupt image pop-in. Respects prefers-reduced-motion below. */
+.img-fade-in {
+  opacity: 0;
+  transform: scale(1.04);
+  transition:
+    opacity 500ms ease-out,
+    transform 700ms ease-out;
+}
+.img-fade-in.is-loaded {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .img-fade-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* Scroll-triggered fade-in-and-rise, used via the <Reveal> component.

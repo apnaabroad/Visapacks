@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { countryImageQueries } from "../data/countryImageQueries.js";
 import { UNSPLASH_UTM, useCountryImage } from "../hooks/useCountryImage.js";
 
@@ -14,6 +16,7 @@ import { UNSPLASH_UTM, useCountryImage } from "../hooks/useCountryImage.js";
 export default function CountryImage({ country, variant = "card" }) {
   const query = countryImageQueries[country.slug] ?? `${country.name} landmark skyline`;
   const { image, status } = useCountryImage(country.slug, query);
+  const [loaded, setLoaded] = useState(false);
 
   if (status !== "ready") return null;
 
@@ -21,15 +24,16 @@ export default function CountryImage({ country, variant = "card" }) {
 
   return (
     <div
-      className={`relative overflow-hidden border-hairline ${
-        isBanner ? "aspect-[21/9] border" : "aspect-[4/3] border-b"
+      className={`group relative overflow-hidden border-hairline ${
+        isBanner ? "aspect-[21/9] border shadow-card" : "aspect-[4/3] border-b"
       }`}
     >
       <img
         src={isBanner ? image.url : image.thumbUrl}
         alt={image.altDescription}
         loading="lazy"
-        className="h-full w-full object-cover"
+        onLoad={() => setLoaded(true)}
+        className={`img-fade-in${loaded ? " is-loaded" : ""} h-full w-full object-cover group-hover:scale-105`}
       />
       <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/60 to-transparent" aria-hidden="true" />
       {isBanner ? (

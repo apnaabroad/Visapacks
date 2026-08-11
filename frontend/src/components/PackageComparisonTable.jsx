@@ -25,40 +25,44 @@ export default function PackageComparisonTable({ packages }) {
   if (tiers.length === 0) return null;
 
   return (
-    <div className="mt-16 overflow-x-auto">
-      <h2 className="text-lg font-bold tracking-tight text-ink">Compare packages</h2>
-      <table className="mt-6 w-full min-w-[640px] border-collapse text-sm">
-        <thead>
-          <tr>
-            <th className="border-b border-hairline pb-3 pr-4 text-left font-medium text-warm-gray">Feature</th>
-            {tiers.map((tier) => {
-              const pkg = packages.find((p) => p.tier === tier);
-              return (
-                <th key={tier} className="border-b border-hairline pb-3 px-4 text-center font-semibold text-ink">
-                  {pkg?.name ?? TIER_LABELS[tier]}
-                  {pkg?.popular && (
-                    <span className="mt-1 block text-[10px] font-semibold uppercase tracking-wide text-burgundy">
-                      Most Chosen
-                    </span>
-                  )}
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
-        <tbody>
-          {FEATURE_MATRIX.map((row) => (
-            <tr key={row.label} className="border-b border-hairline last:border-0">
-              <td className="py-3 pr-4 text-ink">{row.label}</td>
-              {tiers.map((tier) => (
-                <td key={tier} className="py-3 px-4 text-center">
-                  {row.tiers.includes(tier) ? <Check /> : <Cross />}
-                </td>
-              ))}
+    <div className="mt-20">
+      <h2 className="text-2xl font-bold tracking-tight text-ink">Compare packages</h2>
+      <div className="mt-6 overflow-x-auto border border-hairline bg-ivory shadow-card">
+        <table className="w-full min-w-[640px] border-collapse text-sm">
+          <thead>
+            <tr>
+              <th className="border-b border-hairline px-4 py-4 pr-4 text-left font-medium text-warm-gray">
+                Feature
+              </th>
+              {tiers.map((tier) => {
+                const pkg = packages.find((p) => p.tier === tier);
+                return (
+                  <th key={tier} className="border-b border-hairline px-4 py-4 text-center font-semibold text-ink">
+                    {pkg?.name ?? TIER_LABELS[tier]}
+                    {pkg?.popular && (
+                      <span className="mt-1 block text-[10px] font-semibold uppercase tracking-wide text-burgundy">
+                        Most Chosen
+                      </span>
+                    )}
+                  </th>
+                );
+              })}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {FEATURE_MATRIX.map((row) => (
+              <tr key={row.label} className="border-b border-hairline last:border-0 transition-colors duration-150 hover:bg-hairline/25">
+                <td className="px-4 py-3 pr-4 text-ink">{row.label}</td>
+                {tiers.map((tier) => (
+                  <td key={tier} className="px-4 py-3 text-center">
+                    {row.tiers.includes(tier) ? <Check /> : <Cross />}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

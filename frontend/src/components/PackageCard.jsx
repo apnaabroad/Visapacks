@@ -4,17 +4,27 @@ import { formatCurrency } from "../lib/currency.js";
 
 export default function PackageCard({ pkg }) {
   const isPremium = pkg.tier === "PREMIUM";
+  const isPopular = pkg.popular && !isPremium;
   const mutedText = isPremium ? "text-dusty-rose" : "text-warm-gray";
 
   return (
     <div
-      className={`flex h-full flex-col border p-8 ${
-        isPremium ? "bg-ink border-ink text-ivory" : "bg-ivory border-hairline text-ink"
+      className={`relative flex h-full flex-col border p-8 transition-all duration-200 ${
+        isPremium
+          ? "bg-ink border-ink text-ivory shadow-elevated hover:-translate-y-1 hover:shadow-[0_24px_55px_rgba(22,22,22,0.22)]"
+          : isPopular
+            ? "bg-ivory border-burgundy/30 text-ink shadow-elevated lg:scale-105 z-10 hover:-translate-y-1 hover:shadow-[0_24px_55px_rgba(122,31,43,0.16)]"
+            : "bg-ivory border-hairline text-ink shadow-card hover:-translate-y-1 hover:shadow-card-hover"
       }`}
     >
+      {isPopular && (
+        <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap bg-burgundy px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-ivory shadow-card-hover">
+          Most Chosen
+        </span>
+      )}
+
       <p className="text-xs font-semibold uppercase tracking-wide">
         <span className={mutedText}>{pkg.tier}</span>
-        {pkg.popular && !isPremium && <span className="text-burgundy"> · Most Chosen</span>}
       </p>
 
       <h3 className="mt-3 text-xl font-bold tracking-tight">{pkg.name}</h3>
@@ -36,7 +46,7 @@ export default function PackageCard({ pkg }) {
 
       <Link
         to={`/checkout/${pkg.id}`}
-        className={`mt-10 block px-4 py-3 text-center text-sm font-semibold transition-colors ${
+        className={`mt-10 block px-4 py-3 text-center text-sm font-semibold transition-all duration-200 hover:scale-[1.02] hover:shadow-lg ${
           isPremium
             ? "bg-ivory text-ink hover:bg-burgundy hover:text-ivory"
             : "bg-ink text-ivory hover:bg-burgundy"

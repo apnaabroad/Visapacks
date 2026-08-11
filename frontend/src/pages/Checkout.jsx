@@ -50,20 +50,24 @@ export default function Checkout() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-4 sm:px-6 py-12">
+    <div className="mx-auto max-w-4xl px-4 sm:px-6 py-14">
       <Link
         to={`/countries/${pkg.visaType.country.slug}/${pkg.visaType.slug}`}
-        className="text-sm text-ink hover:text-burgundy font-medium transition-colors"
+        className="text-sm text-ink hover:text-burgundy font-medium transition-colors duration-200"
       >
         ← Back to packages
       </Link>
 
-      <Reveal as="h1" className="mt-4 text-3xl font-bold tracking-tight text-ink">
+      <Reveal as="h1" className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-ink">
         Checkout
       </Reveal>
 
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-5 gap-8">
-        <Reveal as="form" onSubmit={handleSubmit} className="md:col-span-3 space-y-5">
+      <div className="mt-10 grid grid-cols-1 md:grid-cols-5 gap-8">
+        <Reveal
+          as="form"
+          onSubmit={handleSubmit}
+          className="md:col-span-3 space-y-5 border border-hairline bg-ivory p-6 sm:p-8 shadow-card"
+        >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Full name" name="customerName" required value={form.customerName} onChange={handleChange} />
             <Field
@@ -94,7 +98,7 @@ export default function Checkout() {
               rows={4}
               value={form.notes}
               onChange={handleChange}
-              className="w-full border border-hairline px-3 py-2 text-sm focus:border-ink focus:outline-none focus:ring-1 focus:ring-ink"
+              className="w-full border border-hairline px-3 py-2 text-sm transition-all duration-200 focus:border-ink focus:outline-none focus:ring-1 focus:ring-ink"
               placeholder="E.g. previous visa refusals, tight travel dates, dependents on the application..."
             />
           </div>
@@ -104,7 +108,7 @@ export default function Checkout() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-ink px-4 py-3 text-sm font-semibold text-ivory hover:bg-burgundy disabled:opacity-60 transition-colors"
+            className="w-full bg-ink px-4 py-3 text-sm font-semibold text-ivory transition-all duration-200 hover:bg-burgundy hover:scale-[1.02] hover:shadow-lg disabled:opacity-60 disabled:hover:scale-100 disabled:hover:shadow-none"
           >
             {submitting ? "Placing order..." : `Confirm purchase - ${formatCurrency(pkg.price, pkg.currency)}`}
           </button>
@@ -114,7 +118,7 @@ export default function Checkout() {
           </p>
         </Reveal>
 
-        <Reveal as="aside" delay={80} className="md:col-span-2 h-fit border border-hairline p-6">
+        <Reveal as="aside" delay={80} className="md:col-span-2 h-fit border border-hairline bg-ivory p-6 shadow-card">
           <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-warm-gray">
             <Flag code={pkg.visaType.country.code} />
             {pkg.visaType.country.name}
@@ -150,7 +154,7 @@ function Field({ label, name, type = "text", required, value, onChange }) {
         required={required}
         value={value}
         onChange={onChange}
-        className="w-full border border-hairline px-3 py-2 text-sm focus:border-ink focus:outline-none focus:ring-1 focus:ring-ink"
+        className="w-full border border-hairline px-3 py-2 text-sm transition-all duration-200 focus:border-ink focus:outline-none focus:ring-1 focus:ring-ink"
       />
     </div>
   );
