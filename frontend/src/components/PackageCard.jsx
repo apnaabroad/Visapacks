@@ -8,7 +8,7 @@ export default function PackageCard({ pkg }) {
 
   return (
     <div
-      className={`flex flex-col border p-8 ${
+      className={`flex h-full flex-col border p-8 ${
         isPremium ? "bg-ink border-ink text-ivory" : "bg-ivory border-hairline text-ink"
       }`}
     >
@@ -20,15 +20,10 @@ export default function PackageCard({ pkg }) {
       <h3 className="mt-3 text-xl font-bold tracking-tight">{pkg.name}</h3>
       <p className={`mt-1 text-sm ${mutedText}`}>{pkg.tagline}</p>
 
-      <p className="mt-8 flex items-baseline gap-1">
-        <span className="text-4xl font-bold tracking-tight">
-          {formatCurrency(pkg.price, pkg.currency)}
-        </span>
-        <span className={`text-sm ${mutedText}`}>one-time</span>
+      <p className="mt-8 text-4xl font-bold tracking-tight">{formatCurrency(pkg.price, pkg.currency)}</p>
+      <p className={`mt-1 text-xs font-medium uppercase tracking-wide ${mutedText}`}>
+        One-time{pkg.turnaround && ` · ${pkg.turnaround}`}
       </p>
-      {pkg.turnaround && (
-        <p className={`mt-1 text-xs font-medium uppercase tracking-wide ${mutedText}`}>{pkg.turnaround}</p>
-      )}
 
       <ul className="mt-8 flex-1 space-y-3 text-sm">
         {pkg.features.map((feature) => (

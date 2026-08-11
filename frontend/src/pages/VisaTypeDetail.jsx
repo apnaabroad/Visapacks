@@ -47,9 +47,9 @@ export default function VisaTypeDetail() {
         <p className="mt-10 text-warm-gray text-sm">No packages are available for this visa type yet.</p>
       ) : (
         <>
-          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
+          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {visaType.packages.map((pkg, index) => (
-              <Reveal key={pkg.id} delay={index * 80}>
+              <Reveal key={pkg.id} delay={index * 80} className="h-full">
                 <PackageCard pkg={pkg} />
               </Reveal>
             ))}
