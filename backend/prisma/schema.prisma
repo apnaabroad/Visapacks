@@ -53,29 +53,26 @@ model VisaType {
   @@index([active])
 }
 
-enum PackageTier {
-  BASIC
-  STANDARD
-  PREMIUM
-}
-
 // A purchasable self-service assistance package for a visa type.
+// tier is a plain string (e.g. "STARTER", "ESSENTIAL", "COMPLETE", "PREMIUM")
+// rather than a Postgres enum, so the tier lineup can change without a
+// destructive enum migration against the live database.
 model Package {
-  id         String      @id @default(cuid())
+  id         String   @id @default(cuid())
   visaTypeId String
-  visaType   VisaType    @relation(fields: [visaTypeId], references: [id], onDelete: Cascade)
-  tier       PackageTier
+  visaType   VisaType @relation(fields: [visaTypeId], references: [id], onDelete: Cascade)
+  tier       String
   name       String
   tagline    String?
   price      Float
-  currency   String      @default("USD")
+  currency   String   @default("INR")
   turnaround String?
   features   Json // array of feature strings shown on the pricing card
-  popular    Boolean     @default(false)
-  active     Boolean     @default(true)
+  popular    Boolean  @default(false)
+  active     Boolean  @default(true)
   orders     Order[]
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@unique([visaTypeId, tier])
 }
@@ -101,7 +98,7 @@ model Order {
   travelDate   DateTime?
   notes        String?
   amount       Float
-  currency     String      @default("USD")
+  currency     String      @default("INR")
   status       OrderStatus @default(PENDING)
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt

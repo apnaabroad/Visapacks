@@ -28,8 +28,8 @@ export default function Home() {
           </h1>
           <p className="mt-5 max-w-2xl mx-auto text-lg text-warm-gray">
             Pick your destination and visa type, choose a package that matches how much
-            help you want, and get a clear checklist, expert review, or full 1-on-1
-            support - all without an agent filing on your behalf.
+            help you want, and get everything from a form walkthrough to a full toolkit
+            of templates and checklists - all without an agent filing on your behalf.
           </p>
         </Reveal>
 
@@ -74,7 +74,7 @@ export default function Home() {
             {
               step: "02",
               title: "Choose your package",
-              body: "Basic for a DIY checklist, Standard for expert review, or Premium for full 1-on-1 guidance.",
+              body: "Starter for the essentials, Essential for the master guide, Complete for every template, or Premium for the full toolkit.",
             },
             {
               step: "03",

@@ -1,9 +1,9 @@
 # VisaPacks
 
 A self-service visa application platform. Customers pick a country and visa
-type, then buy a Basic, Standard, or Premium assistance package to help them
-prepare and submit their own visa application (this is not a filing service -
-customers always apply themselves).
+type, then buy a Starter, Essential, Complete, or Premium assistance package
+to help them prepare and submit their own visa application (this is not a
+filing service - customers always apply themselves).
 
 ## Stack
 
@@ -48,7 +48,7 @@ Country 1---n VisaType 1---n Package 1---n Order
 
 - **Country** - a destination (US, UK, Canada, Schengen, Australia, UAE, Germany, New Zealand at launch)
 - **VisaType** - a visa category for a country (e.g. Tourist, Student)
-- **Package** - a purchasable tier for a visa type: Basic / Standard / Premium, each with its own price and feature list
+- **Package** - a purchasable tier for a visa type: Starter / Essential / Complete / Premium, each with its own price and feature list (pricing is flat across every country/visa type)
 - **Order** - a guest checkout purchase of a package (no customer account required)
 
 Countries, visa types, and packages are all stored in the database and
@@ -102,7 +102,8 @@ entry to the `countries` array, following the existing shape:
       slug: "tourist-visa",
       name: "Tourist Visa",
       description: "For short-term tourism in Japan.",
-      basePrice: 49, // Basic tier price - Standard/Premium are derived automatically
+      // The Starter/Essential/Complete/Premium packages are attached
+      // automatically with the standard flat pricing - no price to set here.
     },
   ],
 },

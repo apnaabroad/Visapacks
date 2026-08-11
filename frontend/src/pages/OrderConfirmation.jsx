@@ -7,9 +7,7 @@ import ErrorMessage from "../components/ErrorMessage.jsx";
 import Flag from "../components/Flag.jsx";
 import Loading from "../components/Loading.jsx";
 import Reveal from "../components/Reveal.jsx";
-
-const currencyFormat = (amount, currency) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency }).format(amount);
+import { formatCurrency } from "../lib/currency.js";
 
 export default function OrderConfirmation() {
   const { orderId } = useParams();
@@ -55,7 +53,7 @@ export default function OrderConfirmation() {
         <div className="mt-3 flex items-center justify-between text-sm">
           <span className="text-warm-gray">Amount</span>
           <span className="font-semibold text-ink">
-            {currencyFormat(order.amount, order.currency)}
+            {formatCurrency(order.amount, order.currency)}
           </span>
         </div>
       </Reveal>

@@ -3,66 +3,79 @@
 // HOW TO ADD A NEW COUNTRY:
 // Just append a new entry to the `countries` array below, following the same
 // shape (code, slug, name, flagEmoji, region, summary, visaTypes[]). Each visa
-// type needs a slug/name/description and a base price - buildTiers() will
-// generate the Basic/Standard/Premium packages for you. Re-run `npm run
-// db:seed` and it will upsert the new data without touching existing rows.
-// No frontend or backend code changes are required - everything is read
-// from the database.
+// type just needs a slug/name/description - buildTiers() attaches the
+// standard Starter/Essential/Complete/Premium lineup (same four tiers, same
+// prices, for every visa type) automatically. Re-run `npm run db:seed` and it
+// will upsert the new data without touching existing rows. No frontend or
+// backend code changes are required - everything is read from the database.
 
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// Generates the standard three-tier package lineup for a visa type from a
-// single base price. Pass `overrides` to customize a specific tier.
-function buildTiers(basePrice, currency = "USD") {
+const TIER_SLUGS = ["STARTER", "ESSENTIAL", "COMPLETE", "PREMIUM"];
+
+// Generates the standard four-tier package lineup, identical for every
+// country and visa type - pricing is flat across the whole catalog.
+function buildTiers() {
   return [
     {
-      tier: "BASIC",
-      name: "Basic",
-      tagline: "Do it yourself, with the right checklist",
-      price: basePrice,
-      currency,
-      turnaround: "Self-paced",
+      tier: "STARTER",
+      name: "Starter",
+      tagline: "The essentials to fill out your form correctly",
+      price: 599,
+      currency: "INR",
+      turnaround: "1 file",
       popular: false,
       features: [
-        "Personalized document checklist",
-        "Step-by-step application guide",
-        "Access to official form links",
-        "Email support (48h response)",
+        "Field-by-field visa form walkthrough",
+        "Common rejection/refusal mistakes to avoid",
+        "Free updates for 12 months",
       ],
     },
     {
-      tier: "STANDARD",
-      name: "Standard",
-      tagline: "Guided review before you submit",
-      price: Math.round(basePrice * 2.2),
-      currency,
-      turnaround: "3-5 business days",
+      tier: "ESSENTIAL",
+      name: "Essential",
+      tagline: "A complete guide plus your full document checklist",
+      price: 999,
+      currency: "INR",
+      turnaround: "3 files",
+      popular: false,
+      features: [
+        "Everything in Starter",
+        "Master guide (comprehensive PDF, 50-70 pages)",
+        "Complete document checklist (by applicant type - employed, self-employed, student, retired)",
+        "Financial requirements overview",
+      ],
+    },
+    {
+      tier: "COMPLETE",
+      name: "Complete",
+      tagline: "Every template and checklist you need to apply with confidence",
+      price: 1599,
+      currency: "INR",
+      turnaround: "8 files",
       popular: true,
       features: [
-        "Everything in Basic",
-        "Application form review by a visa expert",
-        "Document verification & error checks",
-        "Unlimited email support",
-        "Live chat support (24h response)",
+        "Everything in Essential",
+        "Cover letter templates (solo traveler, family, business, wedding, reapplication)",
+        "Employer & sponsor letter templates",
+        "Embassy/visa center appointment checklist",
       ],
     },
     {
       tier: "PREMIUM",
       name: "Premium",
-      tagline: "Full hand-holding from start to finish",
-      price: Math.round(basePrice * 4),
-      currency,
-      turnaround: "1-2 business days",
+      tagline: "The full toolkit, from financial planning to pre-departure",
+      price: 1999,
+      currency: "INR",
+      turnaround: "11 files",
       popular: false,
       features: [
-        "Everything in Standard",
-        "1-on-1 video consultation with an expert",
-        "Mock visa interview & prep session",
-        "Application submitted-with-you walkthrough",
-        "Priority support (same-day response)",
-        "Rejection-risk assessment report",
+        "Everything in Complete",
+        "Financial proof calculator (interactive)",
+        "Refusal decision guide (appeal vs reapply)",
+        "Pre-departure checklist",
       ],
     },
   ];
@@ -81,13 +94,11 @@ const countries = [
         slug: "tourist-b2",
         name: "Tourist Visa (B-2)",
         description: "For vacation, sightseeing, or visiting family and friends.",
-        basePrice: 59,
       },
       {
         slug: "student-f1",
         name: "Student Visa (F-1)",
         description: "For full-time academic study at a US institution.",
-        basePrice: 79,
       },
     ],
   },
@@ -103,13 +114,11 @@ const countries = [
         slug: "standard-visitor",
         name: "Standard Visitor Visa",
         description: "For tourism, visiting family, or short business trips.",
-        basePrice: 55,
       },
       {
         slug: "student",
         name: "Student Visa",
         description: "For studying at a licensed UK student sponsor.",
-        basePrice: 75,
       },
     ],
   },
@@ -125,13 +134,11 @@ const countries = [
         slug: "visitor-visa",
         name: "Visitor Visa (TRV)",
         description: "Temporary Resident Visa for tourism or visiting family.",
-        basePrice: 49,
       },
       {
         slug: "study-permit",
         name: "Study Permit",
         description: "For enrolling in a designated learning institution.",
-        basePrice: 75,
       },
     ],
   },
@@ -147,7 +154,6 @@ const countries = [
         slug: "short-stay-tourist",
         name: "Short-Stay Tourist Visa (Type C)",
         description: "Up to 90 days within a 180-day period, for tourism or family visits.",
-        basePrice: 55,
       },
     ],
   },
@@ -163,13 +169,11 @@ const countries = [
         slug: "visitor-600",
         name: "Visitor Visa (Subclass 600)",
         description: "For tourism or visiting family in Australia.",
-        basePrice: 55,
       },
       {
         slug: "student-500",
         name: "Student Visa (Subclass 500)",
         description: "For full-time study at an Australian institution.",
-        basePrice: 79,
       },
     ],
   },
@@ -185,7 +189,6 @@ const countries = [
         slug: "tourist-visa",
         name: "Tourist Visa",
         description: "30 or 60 day single/multiple entry tourist visa.",
-        basePrice: 45,
       },
     ],
   },
@@ -201,13 +204,11 @@ const countries = [
         slug: "schengen-tourist",
         name: "Schengen Tourist Visa",
         description: "Short-stay visa for tourism or visiting family in Germany.",
-        basePrice: 55,
       },
       {
         slug: "national-student-d",
         name: "National Student Visa (Type D)",
         description: "Long-stay visa for university study in Germany.",
-        basePrice: 85,
       },
     ],
   },
@@ -223,13 +224,25 @@ const countries = [
         slug: "visitor-visa",
         name: "Visitor Visa",
         description: "For tourism, or visiting friends and family in New Zealand.",
-        basePrice: 49,
       },
     ],
   },
 ];
 
 async function main() {
+  // Retiring the old Basic/Standard/Premium lineup for the new four-tier
+  // catalog: clear out any orders and packages left over from the previous
+  // tier names so they don't linger as orphaned rows the app never shows.
+  const staleOrders = await prisma.order.deleteMany({
+    where: { package: { tier: { notIn: TIER_SLUGS } } },
+  });
+  const stalePackages = await prisma.package.deleteMany({
+    where: { tier: { notIn: TIER_SLUGS } },
+  });
+  if (staleOrders.count || stalePackages.count) {
+    console.log(`Cleared ${staleOrders.count} stale order(s) and ${stalePackages.count} stale package(s) from the old tier lineup`);
+  }
+
   for (const [countryIndex, countryData] of countries.entries()) {
     const { visaTypes, ...countryFields } = countryData;
 
@@ -239,16 +252,14 @@ async function main() {
       create: { ...countryFields, sortOrder: countryIndex },
     });
 
-    for (const [visaIndex, visaTypeData] of visaTypes.entries()) {
-      const { basePrice, ...visaTypeFields } = visaTypeData;
-
+    for (const [visaIndex, visaTypeFields] of visaTypes.entries()) {
       const visaType = await prisma.visaType.upsert({
         where: { countryId_slug: { countryId: country.id, slug: visaTypeFields.slug } },
         update: { ...visaTypeFields, sortOrder: visaIndex },
         create: { ...visaTypeFields, sortOrder: visaIndex, countryId: country.id },
       });
 
-      for (const tierData of buildTiers(basePrice)) {
+      for (const tierData of buildTiers()) {
         await prisma.package.upsert({
           where: { visaTypeId_tier: { visaTypeId: visaType.id, tier: tierData.tier } },
           update: tierData,

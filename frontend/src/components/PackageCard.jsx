@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 
-const currencyFormat = (amount, currency) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency }).format(amount);
+import { formatCurrency } from "../lib/currency.js";
 
 export default function PackageCard({ pkg }) {
   const isPremium = pkg.tier === "PREMIUM";
@@ -15,7 +14,7 @@ export default function PackageCard({ pkg }) {
     >
       <p className="text-xs font-semibold uppercase tracking-wide">
         <span className={mutedText}>{pkg.tier}</span>
-        {pkg.popular && !isPremium && <span className="text-burgundy"> · Most popular</span>}
+        {pkg.popular && !isPremium && <span className="text-burgundy"> · Most Chosen</span>}
       </p>
 
       <h3 className="mt-3 text-xl font-bold tracking-tight">{pkg.name}</h3>
@@ -23,9 +22,9 @@ export default function PackageCard({ pkg }) {
 
       <p className="mt-8 flex items-baseline gap-1">
         <span className="text-4xl font-bold tracking-tight">
-          {currencyFormat(pkg.price, pkg.currency)}
+          {formatCurrency(pkg.price, pkg.currency)}
         </span>
-        <span className={`text-sm ${mutedText}`}>/ application</span>
+        <span className={`text-sm ${mutedText}`}>one-time</span>
       </p>
       {pkg.turnaround && (
         <p className={`mt-1 text-xs font-medium uppercase tracking-wide ${mutedText}`}>{pkg.turnaround}</p>

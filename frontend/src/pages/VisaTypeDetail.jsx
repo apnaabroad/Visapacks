@@ -7,6 +7,7 @@ import ErrorMessage from "../components/ErrorMessage.jsx";
 import Flag from "../components/Flag.jsx";
 import Loading from "../components/Loading.jsx";
 import PackageCard from "../components/PackageCard.jsx";
+import PackageComparisonTable from "../components/PackageComparisonTable.jsx";
 import Reveal from "../components/Reveal.jsx";
 
 export default function VisaTypeDetail() {
@@ -45,13 +46,18 @@ export default function VisaTypeDetail() {
       {visaType.packages.length === 0 ? (
         <p className="mt-10 text-warm-gray text-sm">No packages are available for this visa type yet.</p>
       ) : (
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6 items-start">
-          {visaType.packages.map((pkg, index) => (
-            <Reveal key={pkg.id} delay={index * 80}>
-              <PackageCard pkg={pkg} />
-            </Reveal>
-          ))}
-        </div>
+        <>
+          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
+            {visaType.packages.map((pkg, index) => (
+              <Reveal key={pkg.id} delay={index * 80}>
+                <PackageCard pkg={pkg} />
+              </Reveal>
+            ))}
+          </div>
+          <Reveal>
+            <PackageComparisonTable packages={visaType.packages} />
+          </Reveal>
+        </>
       )}
     </div>
   );

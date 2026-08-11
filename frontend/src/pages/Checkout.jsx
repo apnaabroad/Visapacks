@@ -7,9 +7,7 @@ import ErrorMessage from "../components/ErrorMessage.jsx";
 import Flag from "../components/Flag.jsx";
 import Loading from "../components/Loading.jsx";
 import Reveal from "../components/Reveal.jsx";
-
-const currencyFormat = (amount, currency) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency }).format(amount);
+import { formatCurrency } from "../lib/currency.js";
 
 const emptyForm = { customerName: "", email: "", phone: "", travelDate: "", notes: "" };
 
@@ -108,7 +106,7 @@ export default function Checkout() {
             disabled={submitting}
             className="w-full bg-ink px-4 py-3 text-sm font-semibold text-ivory hover:bg-burgundy disabled:opacity-60 transition-colors"
           >
-            {submitting ? "Placing order..." : `Confirm purchase - ${currencyFormat(pkg.price, pkg.currency)}`}
+            {submitting ? "Placing order..." : `Confirm purchase - ${formatCurrency(pkg.price, pkg.currency)}`}
           </button>
           <p className="text-xs text-warm-gray text-center">
             This is a demo checkout. No payment is collected; a payment provider can be
@@ -124,7 +122,7 @@ export default function Checkout() {
           <h2 className="mt-1 font-semibold tracking-tight text-ink">{pkg.visaType.name}</h2>
           <div className="mt-4 flex items-center justify-between border-t border-hairline pt-4">
             <span className="text-sm text-warm-gray">{pkg.name} package</span>
-            <span className="font-bold text-ink">{currencyFormat(pkg.price, pkg.currency)}</span>
+            <span className="font-bold text-ink">{formatCurrency(pkg.price, pkg.currency)}</span>
           </div>
           <ul className="mt-4 space-y-2 text-sm text-ink">
             {pkg.features.map((feature) => (
