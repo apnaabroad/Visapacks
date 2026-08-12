@@ -4,6 +4,7 @@ import { getCountries } from "../api/visaPacks.js";
 import ArcPathSection from "../components/ArcPathSection.jsx";
 import CountryCard from "../components/CountryCard.jsx";
 import ErrorMessage from "../components/ErrorMessage.jsx";
+import HeroHeadline from "../components/HeroHeadline.jsx";
 import Loading from "../components/Loading.jsx";
 import OrbitingFlags from "../components/OrbitingFlags.jsx";
 import Reveal from "../components/Reveal.jsx";
@@ -26,12 +27,8 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-20 sm:pt-28 pb-16">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="text-center md:text-left">
-              <Reveal>
-                <h1 className="text-5xl sm:text-6xl font-bold tracking-[-0.03em] text-ink">
-                  Apply for your visa yourself.
-                  <br />
-                  <span className="text-burgundy">We'll guide every step.</span>
-                </h1>
+              <HeroHeadline />
+              <Reveal delay={250}>
                 <p className="mt-6 max-w-2xl mx-auto md:mx-0 text-lg text-warm-gray">
                   Pick your destination and visa type, choose a package that matches how much
                   help you want, and get everything from a form walkthrough to a full toolkit
