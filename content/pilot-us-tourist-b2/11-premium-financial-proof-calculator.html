@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Financial Proof Calculator - VisaPacks</title>
+<style>
+  :root {
+    --ink: #161616;
+    --ivory: #fbf9f6;
+    --burgundy: #7a1f2b;
+    --warm-gray: #8a857d;
+    --hairline: #e9e4dc;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--ivory);
+    color: var(--ink);
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 40px 24px 80px; }
+  .eyebrow {
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    color: var(--burgundy); margin: 0 0 6px;
+  }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.02em; }
+  .subtitle { color: var(--warm-gray); margin: 0 0 24px; font-size: 15px; }
+  .rule { border: none; border-top: 1.5px solid var(--ink); margin: 0 0 24px; }
+  .notice {
+    background: #fff; border: 1px solid var(--hairline); padding: 14px 16px;
+    font-size: 13px; line-height: 1.55; color: var(--ink); margin-bottom: 28px;
+  }
+  .notice strong { color: var(--burgundy); display: block; font-size: 12px; text-transform: uppercase;
+    letter-spacing: .03em; margin-bottom: 4px; }
+  .card {
+    background: #fff; border: 1px solid var(--hairline); padding: 24px;
+    box-shadow: 0 4px 20px rgba(22,22,22,0.06);
+  }
+  .field { margin-bottom: 18px; }
+  label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .hint { font-size: 12px; color: var(--warm-gray); margin-top: 4px; }
+  input[type="number"], select {
+    width: 100%; padding: 10px 12px; font-size: 14px; border: 1px solid var(--hairline);
+    background: var(--ivory); color: var(--ink); font-family: inherit;
+  }
+  input[type="number"]:focus, select:focus { outline: 2px solid var(--ink); outline-offset: 1px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .checkbox-row { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .checkbox-row input { width: 16px; height: 16px; }
+  .checkbox-row label { margin: 0; font-weight: 500; font-size: 13.5px; }
+  button {
+    width: 100%; padding: 13px; background: var(--ink); color: var(--ivory); border: none;
+    font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 6px;
+    transition: background 150ms ease;
+  }
+  button:hover { background: var(--burgundy); }
+  .result {
+    margin-top: 28px; padding: 22px; background: var(--ink); color: var(--ivory);
+    display: none;
+  }
+  .result.show { display: block; }
+  .result .label { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: #c9958c; margin-bottom: 4px; }
+  .result .amount { font-size: 34px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  td { padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.14); }
+  td:last-child { text-align: right; font-weight: 600; }
+  tr:last-child td { border-bottom: none; padding-top: 10px; }
+  .footer-note { margin-top: 24px; font-size: 11.5px; line-height: 1.6; color: var(--warm-gray); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Premium</p>
+  <h1>Financial Proof Calculator</h1>
+  <p class="subtitle">United States - Tourist Visa (B-2) - a planning estimate, not an official requirement</p>
+  <hr class="rule" />
+
+  <div class="notice">
+    <strong>This is a planning tool, not an official figure</strong>
+    There is no published official minimum bank balance for a B-2 application. This calculator gives
+    you a reasonable estimate for your own budgeting and to gauge whether your financial evidence
+    looks proportionate to your trip - it is not a number any consular officer requires or checks
+    against.
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <div class="field">
+        <label for="days">Trip length (days)</label>
+        <input type="number" id="days" min="1" max="180" value="14" />
+      </div>
+      <div class="field">
+        <label for="travelers">Number of travelers</label>
+        <input type="number" id="travelers" min="1" max="10" value="1" />
+        <p class="hint">Include yourself and anyone whose costs you're covering.</p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="style">Travel style (daily spend per person)</label>
+      <select id="style">
+        <option value="90">Budget - approx. $90/day (hostels, self-catering, public transit)</option>
+        <option value="180" selected>Moderate - approx. $180/day (mid-range hotels, restaurants, some activities)</option>
+        <option value="320">Comfortable - approx. $320/day (upscale hotels, dining out, tours)</option>
+      </select>
+      <p class="hint">Adjust for the cities on your itinerary - major cities run higher than the national average.</p>
+    </div>
+
+    <div class="field">
+      <label for="flight">Estimated round-trip flight cost, per person (leave 0 if already paid or not applicable)</label>
+      <input type="number" id="flight" min="0" value="900" />
+    </div>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="accommodationPaid" />
+      <label for="accommodationPaid">Accommodation is already booked and paid in full</label>
+    </div>
+
+    <button onclick="calculate()">Calculate estimate</button>
+  </div>
+
+  <div class="result" id="result">
+    <p class="label">Suggested minimum funds to evidence</p>
+    <p class="amount" id="totalAmount">$0</p>
+    <table id="breakdown"></table>
+  </div>
+
+  <p class="footer-note">
+    VisaPacks - self-service visa application guidance. Not a government agency; not affiliated with
+    any embassy, consulate, or immigration authority. Figures above are general planning estimates
+    only and are not sourced from or endorsed by any government agency - verify actual costs for
+    your specific itinerary and dates.
+  </p>
+</div>
+
+<script>
+  function formatUSD(n) {
+    return "$" + Math.round(n).toLocaleString("en-US");
+  }
+
+  function calculate() {
+    const days = Math.max(1, parseInt(document.getElementById("days").value) || 1);
+    const travelers = Math.max(1, parseInt(document.getElementById("travelers").value) || 1);
+    const dailyRate = parseInt(document.getElementById("style").value);
+    const flightPerPerson = Math.max(0, parseInt(document.getElementById("flight").value) || 0);
+    const accommodationPaid = document.getElementById("accommodationPaid").checked;
+
+    const livingCosts = dailyRate * days * travelers * (accommodationPaid ? 0.55 : 1);
+    const flightCosts = flightPerPerson * travelers;
+    const subtotal = livingCosts + flightCosts;
+    const buffer = subtotal * 0.15;
+    const total = subtotal + buffer;
+
+    document.getElementById("totalAmount").textContent = formatUSD(total);
+
+    const rows = [
+      [accommodationPaid ? "Daily expenses (accommodation already paid)" : "Accommodation + daily expenses", formatUSD(livingCosts)],
+    ];
+    if (flightCosts > 0) rows.push(["Round-trip flights (" + travelers + " traveler" + (travelers > 1 ? "s" : "") + ")", formatUSD(flightCosts)]);
+    rows.push(["Buffer for incidentals (15%)", formatUSD(buffer)]);
+    rows.push(["Suggested total", formatUSD(total)]);
+
+    document.getElementById("breakdown").innerHTML = rows
+      .map((r) => "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td></tr>")
+      .join("");
+
+    document.getElementById("result").classList.add("show");
+  }
+
+  calculate();
+</script>
+</body>
+</html>
