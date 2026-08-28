@@ -7,6 +7,7 @@ const ALLOWED_MIME = new Set([
   "application/pdf",
   "text/html",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx
 ]);
 const MAX_FILE_BYTES = 20 * 1024 * 1024; // 20MB - comfortably above a 70-page PDF
 
@@ -50,7 +51,7 @@ export const uploadPackageDocument = asyncHandler(async (req, res) => {
     throw new ApiError(400, `File exceeds the ${MAX_FILE_BYTES / 1024 / 1024}MB limit`);
   }
   if (!ALLOWED_MIME.has(req.file.mimetype)) {
-    throw new ApiError(400, `Unsupported file type "${req.file.mimetype}" - use PDF, DOCX, or HTML`);
+    throw new ApiError(400, `Unsupported file type "${req.file.mimetype}" - use PDF, DOCX, XLSX, or HTML`);
   }
 
   const { title, description } = req.body;
@@ -59,7 +60,11 @@ export const uploadPackageDocument = asyncHandler(async (req, res) => {
   }
 
   const fileUrl = await uploadPackageFile(req.file.buffer, req.file.originalname, req.file.mimetype);
-  const fileType = req.file.mimetype === "application/pdf" ? "pdf" : req.file.mimetype === "text/html" ? "html" : "docx";
+  const fileType =
+    req.file.mimetype === "application/pdf" ? "pdf" :
+    req.file.mimetype === "text/html" ? "html" :
+    req.file.mimetype === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? "xlsx" :
+    "docx";
 
   const lastDoc = await prisma.packageDocument.findFirst({
     where: { packageId: pkg.id },
