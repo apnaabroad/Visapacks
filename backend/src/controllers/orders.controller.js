@@ -49,7 +49,12 @@ export const getOrder = asyncHandler(async (req, res) => {
   const order = await prisma.order.findUnique({
     where: { id: req.params.id },
     include: {
-      package: { include: { visaType: { include: { country: true } } } },
+      package: {
+        include: {
+          visaType: { include: { country: true } },
+          documents: { orderBy: { sortOrder: "asc" } },
+        },
+      },
     },
   });
 

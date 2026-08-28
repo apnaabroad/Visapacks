@@ -58,23 +58,44 @@ model VisaType {
 // rather than a Postgres enum, so the tier lineup can change without a
 // destructive enum migration against the live database.
 model Package {
-  id         String   @id @default(cuid())
+  id         String            @id @default(cuid())
   visaTypeId String
-  visaType   VisaType @relation(fields: [visaTypeId], references: [id], onDelete: Cascade)
+  visaType   VisaType          @relation(fields: [visaTypeId], references: [id], onDelete: Cascade)
   tier       String
   name       String
   tagline    String?
   price      Float
-  currency   String   @default("INR")
+  currency   String            @default("INR")
   turnaround String?
   features   Json // array of feature strings shown on the pricing card
-  popular    Boolean  @default(false)
-  active     Boolean  @default(true)
+  popular    Boolean           @default(false)
+  active     Boolean           @default(true)
   orders     Order[]
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  documents  PackageDocument[]
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
 
   @@unique([visaTypeId, tier])
+}
+
+// An actual deliverable file for a package (a guide PDF, a checklist, a
+// letter template, the interactive financial-proof calculator, etc). Every
+// tier's features list is a promise; this table is what actually gets
+// handed to the customer after checkout. Files themselves live in Vercel
+// Blob storage - this row just points at the public blob URL.
+model PackageDocument {
+  id          String   @id @default(cuid())
+  packageId   String
+  package     Package  @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  fileUrl     String
+  fileType    String // "pdf" | "html" | "docx" etc - drives the icon/label client-side
+  sizeBytes   Int?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([packageId, sortOrder])
 }
 
 enum OrderStatus {

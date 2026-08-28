@@ -44,11 +44,13 @@ Visapacks/
 
 ```
 Country 1---n VisaType 1---n Package 1---n Order
+                              Package 1---n PackageDocument
 ```
 
 - **Country** - a destination (US, UK, Canada, Schengen, Australia, UAE, Germany, New Zealand at launch)
 - **VisaType** - a visa category for a country (e.g. Tourist, Student)
 - **Package** - a purchasable tier for a visa type: Starter / Essential / Complete / Premium, each with its own price and feature list (pricing is flat across every country/visa type)
+- **PackageDocument** - an actual deliverable file for a package (a guide PDF, a checklist, a letter template, the interactive financial-proof calculator). A tier's feature list is a promise; this is what actually gets handed to the customer. See [Package documents](#package-documents) below.
 - **Order** - a guest checkout purchase of a package (no customer account required)
 
 Countries, visa types, and packages are all stored in the database and
@@ -133,9 +135,43 @@ was designed to support that without changes.
 | GET    | `/api/countries`                                          | List active countries                 |
 | GET    | `/api/countries/:slug`                                    | Country + its visa types              |
 | GET    | `/api/countries/:countrySlug/visa-types/:visaTypeSlug`     | Visa type + its packages              |
-| GET    | `/api/packages/:id`                                        | Single package + visa type + country  |
+| GET    | `/api/packages/:id`                                        | Single package + visa type + country + its documents |
 | POST   | `/api/orders`                                              | Create an order (guest checkout)      |
-| GET    | `/api/orders/:id`                                          | Fetch an order                        |
+| GET    | `/api/orders/:id`                                          | Fetch an order + its package's documents |
+| GET    | `/api/admin/packages`                                     | *(admin)* Every package, with document counts |
+| GET    | `/api/admin/packages/:packageId/documents`                | *(admin)* A package's documents       |
+| POST   | `/api/admin/packages/:packageId/documents`                | *(admin)* Upload a document (multipart, field `file`) |
+| DELETE | `/api/admin/documents/:documentId`                         | *(admin)* Remove a document            |
+
+`/api/admin/*` routes require an `x-admin-secret` header matching `ADMIN_UPLOAD_SECRET` - see [Package documents](#package-documents).
+
+## Package documents
+
+Each package's feature list (e.g. "Master guide", "Cover letter templates")
+is a promise; the actual files customers download live in the
+`PackageDocument` table and get uploaded through a small admin surface at
+`/admin` on the deployed frontend (not linked from the site nav - go there
+directly).
+
+**How storage works:** files are stored in [Vercel Blob](https://vercel.com/docs/storage/vercel-blob).
+In production, connect Blob storage to the backend Vercel project (**Storage
+→ Create Database → Blob**) - Vercel sets `BLOB_READ_WRITE_TOKEN`
+automatically, no manual config needed. Locally, with no token set, uploads
+fall back to `backend/uploads/` on disk (gitignored) and are served from
+`/uploads/*`, so the whole upload → download flow works without a Vercel
+account.
+
+**To upload documents:**
+
+1. Set `ADMIN_UPLOAD_SECRET` in the backend's environment (any long random
+   string - see `.env.example`).
+2. Visit `<frontend-url>/admin` and enter that secret.
+3. Click a package (country · visa type · tier) to expand it, then upload a
+   file with a title and optional description. PDF, DOCX, and HTML are
+   accepted, up to 20MB.
+
+Uploaded documents appear automatically on the order confirmation page for
+anyone who buys that package - no code changes or redeploys needed.
 
 ## Payments
 
@@ -164,14 +200,24 @@ create it. Once it's created, open its **`.env.local`** / "Quickstart" tab and
 copy the connection string shown there - you'll paste it as `DATABASE_URL` in
 the next step. Free tier is enough for this project.
 
-### 3. Deploy the backend
+### 3. Create a Blob store (for package documents)
+
+From the same **Storage** tab: **Create Database → Blob**. This is what
+holds the actual guide/checklist/template files uploaded through `/admin` -
+see [Package documents](#package-documents). Connecting it to the backend
+project sets `BLOB_READ_WRITE_TOKEN` automatically; you don't paste anything
+for this one. Skippable if you don't need document uploads yet - the rest of
+the site works fine without it.
+
+### 4. Deploy the backend
 
 **Add New → Project → Import** this repo, then:
 
 - **Root Directory**: `backend`
 - **Framework Preset**: Other
-- **Environment Variables**: add `DATABASE_URL` = *(the connection string from step 2)*
+- **Environment Variables**: add `DATABASE_URL` = *(the connection string from step 2)*, and `ADMIN_UPLOAD_SECRET` = *(any long random string, for the `/admin` document-upload page)*
 - Click **Deploy**
+- Afterwards, connect the Blob store from step 3 to this project under the project's **Storage** tab if you didn't already
 
 On deploy, Vercel runs `backend/package.json`'s `vercel-build` script, which
 runs `prisma generate`, syncs the schema into your new database with
@@ -187,13 +233,13 @@ you should see the 8 seeded countries as JSON. (Use `/api/health`, not bare
 `/health`, when checking a Vercel deployment - see the troubleshooting note
 below for why only paths under `/api/*` are guaranteed to reach the app there.)
 
-### 4. Deploy the frontend
+### 5. Deploy the frontend
 
 **Add New → Project → Import** the same repo again, then:
 
 - **Root Directory**: `frontend`
 - **Framework Preset**: Vite (auto-detected)
-- **Environment Variables**: add `VITE_API_URL` = `https://<your-backend-url-from-step-3>/api`,
+- **Environment Variables**: add `VITE_API_URL` = `https://<your-backend-url-from-step-4>/api`,
   and optionally `VITE_UNSPLASH_ACCESS_KEY` (see [Destination photos](#destination-photos) below)
 - Click **Deploy**
 
@@ -228,10 +274,10 @@ A few things worth knowing about how this is built (`frontend/src/hooks/useCount
   add an entry there for any new country, or it falls back to a generic
   `"<name> landmark skyline"` query.
 
-### 5. (Optional) Lock down CORS
+### 6. (Optional) Lock down CORS
 
 By default the backend accepts requests from any origin (`CORS_ORIGIN` is
-unset, which the app treats as `*`) so step 3 and 4 don't need to happen in a
+unset, which the app treats as `*`) so step 4 and 5 don't need to happen in a
 particular order. Once you know your frontend's URL, you can go back to the
 backend project's **Settings → Environment Variables**, add
 `CORS_ORIGIN` = `https://<your-frontend-url>`, and redeploy to restrict it.

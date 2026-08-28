@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import { getErrorMessage } from "../api/client.js";
+import { getErrorMessage, resolveFileUrl } from "../api/client.js";
 import { getOrder } from "../api/visaPacks.js";
 import ErrorMessage from "../components/ErrorMessage.jsx";
 import Flag from "../components/Flag.jsx";
@@ -57,6 +57,34 @@ export default function OrderConfirmation() {
           </span>
         </div>
       </Reveal>
+
+      {order.package.documents?.length > 0 && (
+        <Reveal delay={130} className="mt-6 border border-hairline bg-ivory p-6 text-left shadow-card">
+          <p className="text-xs font-semibold uppercase tracking-wide text-warm-gray">Your documents</p>
+          <ul className="mt-4 space-y-3">
+            {order.package.documents.map((doc) => (
+              <li key={doc.id}>
+                <a
+                  href={resolveFileUrl(doc.fileUrl)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-between gap-3 border border-hairline p-3 text-sm transition-all duration-200 hover:border-ink hover:shadow-card-hover"
+                >
+                  <span>
+                    <span className="block font-medium text-ink">{doc.title}</span>
+                    {doc.description && (
+                      <span className="mt-0.5 block text-xs text-warm-gray">{doc.description}</span>
+                    )}
+                  </span>
+                  <span className="shrink-0 text-xs font-semibold uppercase tracking-wide text-warm-gray group-hover:text-burgundy">
+                    {doc.fileType} ↓
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      )}
 
       <Reveal delay={160}>
         <Link

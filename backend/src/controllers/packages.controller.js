@@ -10,6 +10,7 @@ export const getPackage = asyncHandler(async (req, res) => {
       visaType: {
         include: { country: true },
       },
+      documents: { orderBy: { sortOrder: "asc" } },
     },
   });
 
