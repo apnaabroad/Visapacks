@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
 import { getCountries } from "../api/visaPacks.js";
-import ArcPathSection from "../components/ArcPathSection.jsx";
+import ClosingCta from "../components/ClosingCta.jsx";
 import CountryCard from "../components/CountryCard.jsx";
 import ErrorMessage from "../components/ErrorMessage.jsx";
 import HeroHeadline from "../components/HeroHeadline.jsx";
 import Loading from "../components/Loading.jsx";
-import OrbitingFlags from "../components/OrbitingFlags.jsx";
+import PassportStamps from "../components/PassportStamps.jsx";
 import Reveal from "../components/Reveal.jsx";
 import ScrollTagline from "../components/ScrollTagline.jsx";
 import { getErrorMessage } from "../api/client.js";
@@ -29,7 +29,7 @@ export default function Home() {
             <div className="text-center md:text-left">
               <HeroHeadline />
               <Reveal delay={250}>
-                <p className="mt-6 max-w-2xl mx-auto md:mx-0 text-lg text-warm-gray">
+                <p className="mt-6 max-w-2xl mx-auto md:mx-0 text-lg text-stone">
                   Pick your destination and visa type, choose a package that matches how much
                   help you want, and get everything from a form walkthrough to a full toolkit
                   of templates and checklists - all without an agent filing on your behalf.
@@ -38,7 +38,7 @@ export default function Home() {
 
               <Reveal
                 delay={100}
-                className="mt-8 flex flex-wrap items-center justify-center md:justify-start gap-x-2 gap-y-1 text-xs uppercase tracking-wide text-warm-gray"
+                className="mt-8 flex flex-wrap items-center justify-center md:justify-start gap-x-2 gap-y-1 text-xs uppercase tracking-wide text-stone"
               >
                 <span>8 countries supported</span>
                 <span aria-hidden="true">·</span>
@@ -49,7 +49,7 @@ export default function Home() {
             </div>
 
             <div className="hidden md:flex justify-center">
-              <OrbitingFlags />
+              <PassportStamps />
             </div>
           </div>
         </div>
@@ -58,7 +58,7 @@ export default function Home() {
       <ScrollTagline />
 
       <section id="choose-destination" className="mx-auto max-w-6xl px-4 sm:px-6 pb-28">
-        <Reveal as="h2" className="text-2xl font-bold tracking-tight text-ink mb-8">
+        <Reveal as="h2" className="font-display text-3xl font-semibold tracking-tight text-ink mb-8">
           Choose a destination
         </Reveal>
 
@@ -77,7 +77,7 @@ export default function Home() {
 
       <section id="how-it-works" className="border-t border-hairline bg-ivory">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-24">
-          <Reveal as="h2" className="text-2xl font-bold tracking-tight text-ink mb-10">
+          <Reveal as="h2" className="font-display text-3xl font-semibold tracking-tight text-ink mb-10">
             How it works
           </Reveal>
           <div className="grid gap-6 sm:grid-cols-3">
@@ -103,16 +103,18 @@ export default function Home() {
                 delay={index * 90}
                 className="h-full border border-hairline bg-ivory p-7 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover"
               >
-                <p className="text-sm font-semibold text-burgundy">{item.step}</p>
-                <h3 className="mt-3 text-lg font-semibold tracking-tight text-ink">{item.title}</h3>
-                <p className="mt-2 text-sm text-warm-gray">{item.body}</p>
+                <span className="font-display flex h-10 w-10 items-center justify-center rounded-full border border-brass/40 text-sm font-semibold text-brass">
+                  {item.step}
+                </span>
+                <h3 className="font-display mt-4 text-lg font-semibold tracking-tight text-ink">{item.title}</h3>
+                <p className="mt-2 text-sm text-stone">{item.body}</p>
               </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      <ArcPathSection />
+      <ClosingCta />
     </div>
   );
 }

@@ -28,7 +28,7 @@ export default function CountryDetail() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 sm:px-6 py-14">
-      <Link to="/" className="text-sm text-ink hover:text-burgundy font-medium transition-colors duration-200">
+      <Link to="/" className="text-sm text-ink hover:text-brass font-medium transition-colors duration-200">
         ← All countries
       </Link>
 
@@ -37,17 +37,19 @@ export default function CountryDetail() {
       </Reveal>
 
       <Reveal className="mt-6 flex items-center gap-4">
-        <Flag code={country.code} className="text-5xl" />
+        <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-hairline bg-ivory text-3xl shadow-card">
+          <Flag code={country.code} />
+        </span>
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-ink">{country.name}</h1>
-          <p className="text-warm-gray">{country.summary}</p>
+          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-ink">{country.name}</h1>
+          <p className="text-stone">{country.summary}</p>
         </div>
       </Reveal>
 
-      <h2 className="mt-12 text-2xl font-bold tracking-tight text-ink">Select a visa type</h2>
+      <h2 className="mt-12 text-2xl font-semibold tracking-tight text-ink">Select a visa type</h2>
       <div className="mt-5 space-y-3">
         {country.visaTypes.length === 0 && (
-          <p className="text-warm-gray text-sm">No visa types are available for this country yet.</p>
+          <p className="text-stone text-sm">No visa types are available for this country yet.</p>
         )}
         {country.visaTypes.map((visaType, index) => (
           <Reveal key={visaType.id} delay={index * 70}>

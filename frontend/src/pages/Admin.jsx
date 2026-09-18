@@ -40,7 +40,7 @@ export default function Admin() {
     return (
       <div className="mx-auto max-w-sm px-4 sm:px-6 py-24">
         <h1 className="text-2xl font-bold tracking-tight text-ink">Admin</h1>
-        <p className="mt-2 text-sm text-warm-gray">Enter the admin secret to manage package documents.</p>
+        <p className="mt-2 text-sm text-stone">Enter the admin secret to manage package documents.</p>
         <form onSubmit={handleSubmitSecret} className="mt-6 space-y-3">
           <input
             type="password"
@@ -50,10 +50,10 @@ export default function Admin() {
             placeholder="Admin secret"
             className="w-full border border-hairline px-3 py-2 text-sm transition-all duration-200 focus:border-ink focus:outline-none focus:ring-1 focus:ring-ink"
           />
-          {authError && <p className="text-sm text-burgundy">{authError}</p>}
+          {authError && <p className="text-sm text-brass">{authError}</p>}
           <button
             type="submit"
-            className="w-full bg-ink px-4 py-2.5 text-sm font-semibold text-ivory transition-all duration-200 hover:bg-burgundy"
+            className="w-full bg-ink px-4 py-2.5 text-sm font-semibold text-ivory transition-all duration-200 hover:bg-brass"
           >
             Continue
           </button>
@@ -65,7 +65,7 @@ export default function Admin() {
   return (
     <div className="mx-auto max-w-4xl px-4 sm:px-6 py-14">
       <h1 className="text-2xl font-bold tracking-tight text-ink">Package documents</h1>
-      <p className="mt-2 text-sm text-warm-gray">
+      <p className="mt-2 text-sm text-stone">
         {packages.length} packages across every country and visa type. Click one to upload or remove its files.
       </p>
 
@@ -115,21 +115,21 @@ function PackageRow({ pkg, secret, expanded, onToggle, onDocsChanged }) {
           <Flag code={pkg.visaType.country.code} />
           <span className="truncate text-sm text-ink">
             <span className="font-medium">{pkg.visaType.country.name}</span> · {pkg.visaType.name} ·{" "}
-            <span className="font-semibold text-burgundy">{pkg.tier}</span>
+            <span className="font-semibold text-brass">{pkg.tier}</span>
           </span>
         </span>
-        <span className="shrink-0 text-xs font-medium uppercase tracking-wide text-warm-gray">
+        <span className="shrink-0 text-xs font-medium uppercase tracking-wide text-stone">
           {pkg._count.documents} file{pkg._count.documents === 1 ? "" : "s"}
         </span>
       </button>
 
       {expanded && (
         <div className="border-t border-hairline bg-hairline/10 p-4">
-          {loadError && <p className="text-sm text-burgundy">{loadError}</p>}
-          {documents === null && !loadError && <p className="text-sm text-warm-gray">Loading...</p>}
+          {loadError && <p className="text-sm text-brass">{loadError}</p>}
+          {documents === null && !loadError && <p className="text-sm text-stone">Loading...</p>}
           {documents && (
             <ul className="space-y-2">
-              {documents.length === 0 && <p className="text-sm text-warm-gray">No documents uploaded yet.</p>}
+              {documents.length === 0 && <p className="text-sm text-stone">No documents uploaded yet.</p>}
               {documents.map((doc) => (
                 <li
                   key={doc.id}
@@ -139,10 +139,10 @@ function PackageRow({ pkg, secret, expanded, onToggle, onDocsChanged }) {
                     href={resolveFileUrl(doc.fileUrl)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="min-w-0 truncate text-ink hover:text-burgundy"
+                    className="min-w-0 truncate text-ink hover:text-brass"
                   >
                     <span className="font-medium">{doc.title}</span>{" "}
-                    <span className="text-xs uppercase text-warm-gray">.{doc.fileType}</span>
+                    <span className="text-xs uppercase text-stone">.{doc.fileType}</span>
                   </a>
                   <button
                     type="button"
@@ -151,7 +151,7 @@ function PackageRow({ pkg, secret, expanded, onToggle, onDocsChanged }) {
                       loadDocuments();
                       onDocsChanged();
                     }}
-                    className="shrink-0 text-xs font-semibold uppercase tracking-wide text-warm-gray hover:text-burgundy"
+                    className="shrink-0 text-xs font-semibold uppercase tracking-wide text-stone hover:text-brass"
                   >
                     Remove
                   </button>
@@ -226,13 +226,13 @@ function UploadForm({ packageId, secret, onUploaded }) {
         required
         accept=".pdf,.docx,.html"
         onChange={(event) => setFile(event.target.files[0] ?? null)}
-        className="sm:col-span-2 text-sm text-ink file:mr-3 file:border-0 file:bg-ink file:px-3 file:py-1.5 file:text-xs file:font-semibold file:uppercase file:text-ivory file:transition-colors file:hover:bg-burgundy"
+        className="sm:col-span-2 text-sm text-ink file:mr-3 file:border-0 file:bg-ink file:px-3 file:py-1.5 file:text-xs file:font-semibold file:uppercase file:text-ivory file:transition-colors file:hover:bg-brass"
       />
-      {error && <p className="sm:col-span-2 text-sm text-burgundy">{error}</p>}
+      {error && <p className="sm:col-span-2 text-sm text-brass">{error}</p>}
       <button
         type="submit"
         disabled={submitting}
-        className="sm:col-span-2 bg-ink px-4 py-2 text-sm font-semibold text-ivory transition-all duration-200 hover:bg-burgundy disabled:opacity-60"
+        className="sm:col-span-2 bg-ink px-4 py-2 text-sm font-semibold text-ivory transition-all duration-200 hover:bg-brass disabled:opacity-60"
       >
         {submitting ? "Uploading..." : "Upload document"}
       </button>

@@ -14,18 +14,18 @@ export default function ScrollTagline() {
   return (
     <section className="border-t border-hairline">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 py-24 sm:py-32 text-center">
-        <Reveal className="mx-auto h-px w-12 bg-burgundy" />
+        <Reveal className="mx-auto h-px w-12 bg-brass" />
         <Reveal
           as="p"
           delay={80}
-          className="mt-8 text-3xl sm:text-5xl font-bold tracking-tight text-ink text-balance"
+          className="font-display mt-8 text-3xl sm:text-5xl font-semibold tracking-tight text-ink text-balance"
         >
           {TAGLINE}
         </Reveal>
         <Reveal
           as="p"
           delay={160}
-          className="mt-6 text-base sm:text-lg text-warm-gray max-w-xl mx-auto text-balance"
+          className="mt-6 text-base sm:text-lg text-stone max-w-xl mx-auto text-balance"
         >
           {SUPPORTING_COPY}
         </Reveal>

@@ -26,11 +26,19 @@ export default function OrderConfirmation() {
   return (
     <div className="mx-auto max-w-xl px-4 sm:px-6 py-20 text-center">
       <Reveal>
-        <p className="text-5xl">🎉</p>
-        <h1 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-ink">
+        <span
+          className="stamp mx-auto flex h-20 w-20 flex-col items-center justify-center text-petrol"
+          style={{ "--stamp-rotate": "-6deg" }}
+        >
+          <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" aria-hidden="true">
+            <path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <span className="text-[8px] font-semibold uppercase tracking-widest">Confirmed</span>
+        </span>
+        <h1 className="font-display mt-5 text-3xl sm:text-4xl font-semibold tracking-tight text-ink">
           You're all set, {order.customerName.split(" ")[0]}!
         </h1>
-        <p className="mt-3 text-warm-gray">
+        <p className="mt-3 text-stone">
           Your {order.package.name} package for{" "}
           <strong className="text-ink">
             <Flag code={order.package.visaType.country.code} /> {order.package.visaType.name}
@@ -41,17 +49,17 @@ export default function OrderConfirmation() {
 
       <Reveal delay={100} className="mt-10 border border-hairline bg-ivory p-6 text-left shadow-card">
         <div className="flex items-center justify-between text-sm">
-          <span className="text-warm-gray">Order number</span>
+          <span className="text-stone">Order number</span>
           <span className="font-mono font-semibold text-ink">{order.orderNumber}</span>
         </div>
         <div className="mt-3 flex items-center justify-between text-sm">
-          <span className="text-warm-gray">Status</span>
+          <span className="text-stone">Status</span>
           <span className="border border-hairline px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-ink">
             {order.status}
           </span>
         </div>
         <div className="mt-3 flex items-center justify-between text-sm">
-          <span className="text-warm-gray">Amount</span>
+          <span className="text-stone">Amount</span>
           <span className="font-semibold text-ink">
             {formatCurrency(order.amount, order.currency)}
           </span>
@@ -60,7 +68,7 @@ export default function OrderConfirmation() {
 
       {order.package.documents?.length > 0 && (
         <Reveal delay={130} className="mt-6 border border-hairline bg-ivory p-6 text-left shadow-card">
-          <p className="text-xs font-semibold uppercase tracking-wide text-warm-gray">Your documents</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-stone">Your documents</p>
           <ul className="mt-4 space-y-3">
             {order.package.documents.map((doc) => (
               <li key={doc.id}>
@@ -68,15 +76,15 @@ export default function OrderConfirmation() {
                   href={resolveFileUrl(doc.fileUrl)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-between gap-3 border border-hairline p-3 text-sm transition-all duration-200 hover:border-ink hover:shadow-card-hover"
+                  className="group flex items-center justify-between gap-3 border border-hairline p-3 text-sm transition-all duration-200 hover:border-brass/50 hover:shadow-card-hover"
                 >
                   <span>
                     <span className="block font-medium text-ink">{doc.title}</span>
                     {doc.description && (
-                      <span className="mt-0.5 block text-xs text-warm-gray">{doc.description}</span>
+                      <span className="mt-0.5 block text-xs text-stone">{doc.description}</span>
                     )}
                   </span>
-                  <span className="shrink-0 text-xs font-semibold uppercase tracking-wide text-warm-gray group-hover:text-burgundy">
+                  <span className="shrink-0 text-xs font-semibold uppercase tracking-wide text-stone group-hover:text-brass">
                     {doc.fileType} ↓
                   </span>
                 </a>
@@ -89,7 +97,7 @@ export default function OrderConfirmation() {
       <Reveal delay={160}>
         <Link
           to="/"
-          className="mt-10 inline-block bg-ink px-5 py-2.5 text-sm font-semibold text-ivory transition-all duration-200 hover:bg-burgundy hover:scale-[1.02] hover:shadow-lg"
+          className="mt-10 inline-block bg-ink px-5 py-2.5 text-sm font-semibold text-ivory transition-all duration-200 hover:bg-brass hover:scale-[1.02] hover:shadow-lg"
         >
           Browse more destinations
         </Link>

@@ -53,12 +53,12 @@ export default function Checkout() {
     <div className="mx-auto max-w-4xl px-4 sm:px-6 py-14">
       <Link
         to={`/countries/${pkg.visaType.country.slug}/${pkg.visaType.slug}`}
-        className="text-sm text-ink hover:text-burgundy font-medium transition-colors duration-200"
+        className="text-sm text-ink hover:text-brass font-medium transition-colors duration-200"
       >
         ← Back to packages
       </Link>
 
-      <Reveal as="h1" className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-ink">
+      <Reveal as="h1" className="font-display mt-4 text-3xl sm:text-4xl font-semibold tracking-tight text-ink">
         Checkout
       </Reveal>
 
@@ -98,40 +98,40 @@ export default function Checkout() {
               rows={4}
               value={form.notes}
               onChange={handleChange}
-              className="w-full border border-hairline px-3 py-2 text-sm transition-all duration-200 focus:border-ink focus:outline-none focus:ring-1 focus:ring-ink"
+              className="w-full border border-hairline px-3 py-2 text-sm transition-all duration-200 focus:border-brass focus:outline-none focus:ring-1 focus:ring-brass"
               placeholder="E.g. previous visa refusals, tight travel dates, dependents on the application..."
             />
           </div>
 
-          {submitError && <p className="text-sm text-burgundy">{submitError}</p>}
+          {submitError && <p className="text-sm text-brass">{submitError}</p>}
 
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-ink px-4 py-3 text-sm font-semibold text-ivory transition-all duration-200 hover:bg-burgundy hover:scale-[1.02] hover:shadow-lg disabled:opacity-60 disabled:hover:scale-100 disabled:hover:shadow-none"
+            className="w-full bg-ink px-4 py-3 text-sm font-semibold text-ivory transition-all duration-200 hover:bg-brass hover:scale-[1.02] hover:shadow-lg disabled:opacity-60 disabled:hover:scale-100 disabled:hover:shadow-none"
           >
             {submitting ? "Placing order..." : `Confirm purchase - ${formatCurrency(pkg.price, pkg.currency)}`}
           </button>
-          <p className="text-xs text-warm-gray text-center">
+          <p className="text-xs text-stone text-center">
             This is a demo checkout. No payment is collected; a payment provider can be
             plugged into the backend order flow later.
           </p>
         </Reveal>
 
         <Reveal as="aside" delay={80} className="md:col-span-2 h-fit border border-hairline bg-ivory p-6 shadow-card">
-          <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-warm-gray">
+          <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-stone">
             <Flag code={pkg.visaType.country.code} />
             {pkg.visaType.country.name}
           </p>
           <h2 className="mt-1 font-semibold tracking-tight text-ink">{pkg.visaType.name}</h2>
           <div className="mt-4 flex items-center justify-between border-t border-hairline pt-4">
-            <span className="text-sm text-warm-gray">{pkg.name} package</span>
+            <span className="text-sm text-stone">{pkg.name} package</span>
             <span className="font-bold text-ink">{formatCurrency(pkg.price, pkg.currency)}</span>
           </div>
           <ul className="mt-4 space-y-2 text-sm text-ink">
             {pkg.features.map((feature) => (
               <li key={feature} className="flex items-start gap-3">
-                <span className="text-warm-gray">—</span>
+                <span className="text-stone">—</span>
                 <span>{feature}</span>
               </li>
             ))}
@@ -146,7 +146,7 @@ function Field({ label, name, type = "text", required, value, onChange }) {
   return (
     <div>
       <label className="block text-sm font-medium text-ink mb-1">
-        {label} {required && <span className="text-burgundy">*</span>}
+        {label} {required && <span className="text-brass">*</span>}
       </label>
       <input
         type={type}
@@ -154,7 +154,7 @@ function Field({ label, name, type = "text", required, value, onChange }) {
         required={required}
         value={value}
         onChange={onChange}
-        className="w-full border border-hairline px-3 py-2 text-sm transition-all duration-200 focus:border-ink focus:outline-none focus:ring-1 focus:ring-ink"
+        className="w-full border border-hairline px-3 py-2 text-sm transition-all duration-200 focus:border-brass focus:outline-none focus:ring-1 focus:ring-brass"
       />
     </div>
   );
