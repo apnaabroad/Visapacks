@@ -50,8 +50,8 @@ export default function Home() {
 
   return (
     <div>
-      <section className="relative overflow-hidden">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-16 sm:pt-24">
+      <section className="relative">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-16 sm:pt-24 pb-20 sm:pb-24">
           <div className="relative">
             <TravelMark className="pointer-events-none absolute -top-4 right-0 h-20 w-20 sm:h-28 sm:w-28" />
 
@@ -77,23 +77,21 @@ export default function Home() {
             </Reveal>
           </div>
 
-          <div className="relative mt-16 sm:h-[130px] sm:overflow-hidden">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-5">
-              {HIGHLIGHT_CARDS.map((card, index) => (
-                <Reveal key={card.title} delay={index * 90} className="rounded-[28px] sm:h-[280px] sm:rounded-t-[28px] sm:rounded-b-none">
-                  <div className={`flex h-full flex-col p-7 ${card.className}`}>
-                    <h3 className="font-display text-xl font-bold tracking-tight">{card.title}</h3>
-                    <p className="mt-2 text-sm opacity-80">{card.body}</p>
-                    <a
-                      href={card.href}
-                      className={`mt-5 inline-block w-fit rounded-full border px-4 py-2 text-xs font-bold ${card.button}`}
-                    >
-                      {card.cta}
-                    </a>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
+          <div className="mt-16 grid grid-cols-1 gap-5 sm:grid-cols-3">
+            {HIGHLIGHT_CARDS.map((card, index) => (
+              <Reveal key={card.title} delay={index * 90} className="h-full">
+                <div className={`flex h-full flex-col rounded-[28px] p-7 ${card.className}`}>
+                  <h3 className="font-display text-xl font-bold tracking-tight">{card.title}</h3>
+                  <p className="mt-2 text-sm opacity-80">{card.body}</p>
+                  <a
+                    href={card.href}
+                    className={`mt-5 inline-block w-fit rounded-full border px-4 py-2 text-xs font-bold transition-opacity duration-200 hover:opacity-70 ${card.button}`}
+                  >
+                    {card.cta}
+                  </a>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
