@@ -8,7 +8,7 @@ import HeroHeadline from "../components/HeroHeadline.jsx";
 import Loading from "../components/Loading.jsx";
 import Reveal from "../components/Reveal.jsx";
 import ScrollTagline from "../components/ScrollTagline.jsx";
-import Starburst from "../components/Starburst.jsx";
+import TravelMark from "../components/TravelMark.jsx";
 import { getErrorMessage } from "../api/client.js";
 
 const HIGHLIGHT_CARDS = [
@@ -53,7 +53,7 @@ export default function Home() {
       <section className="relative overflow-hidden">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-16 sm:pt-24">
           <div className="relative">
-            <Starburst className="pointer-events-none absolute -top-4 right-0 h-20 w-20 text-brass sm:h-28 sm:w-28" />
+            <TravelMark className="pointer-events-none absolute -top-4 right-0 h-20 w-20 sm:h-28 sm:w-28" />
 
             <HeroHeadline />
 

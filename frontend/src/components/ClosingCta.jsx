@@ -1,14 +1,14 @@
 import Reveal from "./Reveal.jsx";
-import Starburst from "./Starburst.jsx";
+import TravelMark from "./TravelMark.jsx";
 
 // The page's closing call-to-action - one bold headline, one pill button,
-// the starburst mark for punctuation. No illustration, no animated path -
+// the travel mark for punctuation. No illustration, no animated path -
 // the same restraint the rest of the page uses.
 export default function ClosingCta() {
   return (
     <section className="border-t border-hairline bg-ink text-ivory">
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 py-24 sm:py-28 text-center overflow-hidden">
-        <Starburst className="pointer-events-none absolute -top-6 right-4 h-28 w-28 text-brass/70 sm:right-10" />
+        <TravelMark className="pointer-events-none absolute -top-6 right-4 h-20 w-20 sm:right-10" />
 
         <Reveal
           as="h2"
