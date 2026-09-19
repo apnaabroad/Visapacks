@@ -53,12 +53,12 @@ export default function Checkout() {
     <div className="mx-auto max-w-4xl px-4 sm:px-6 py-14">
       <Link
         to={`/countries/${pkg.visaType.country.slug}/${pkg.visaType.slug}`}
-        className="text-sm text-ink hover:text-brass font-medium transition-colors duration-200"
+        className="text-sm text-ink hover:opacity-60 font-medium transition-colors duration-200"
       >
         ← Back to packages
       </Link>
 
-      <Reveal as="h1" className="font-display mt-4 text-3xl sm:text-4xl font-semibold tracking-tight text-ink">
+      <Reveal as="h1" className="font-display mt-4 text-3xl sm:text-4xl font-extrabold tracking-tight text-ink">
         Checkout
       </Reveal>
 
@@ -66,7 +66,7 @@ export default function Checkout() {
         <Reveal
           as="form"
           onSubmit={handleSubmit}
-          className="md:col-span-3 space-y-5 border border-hairline bg-ivory p-6 sm:p-8 shadow-card"
+          className="md:col-span-3 space-y-5 rounded-[28px] border border-hairline bg-ivory p-6 sm:p-8 shadow-card"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Full name" name="customerName" required value={form.customerName} onChange={handleChange} />
@@ -98,17 +98,17 @@ export default function Checkout() {
               rows={4}
               value={form.notes}
               onChange={handleChange}
-              className="w-full border border-hairline px-3 py-2 text-sm transition-all duration-200 focus:border-brass focus:outline-none focus:ring-1 focus:ring-brass"
+              className="w-full rounded-2xl border border-hairline px-4 py-3 text-sm transition-all duration-200 focus:border-brass focus:outline-none focus:ring-2 focus:ring-brass"
               placeholder="E.g. previous visa refusals, tight travel dates, dependents on the application..."
             />
           </div>
 
-          {submitError && <p className="text-sm text-brass">{submitError}</p>}
+          {submitError && <p className="text-sm text-error">{submitError}</p>}
 
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-ink px-4 py-3 text-sm font-semibold text-ivory transition-all duration-200 hover:bg-brass hover:scale-[1.02] hover:shadow-lg disabled:opacity-60 disabled:hover:scale-100 disabled:hover:shadow-none"
+            className="w-full rounded-full bg-ink px-4 py-3.5 text-sm font-bold text-ivory transition-all duration-200 hover:bg-brass hover:text-ink hover:scale-[1.02] disabled:opacity-60 disabled:hover:scale-100"
           >
             {submitting ? "Placing order..." : `Confirm purchase - ${formatCurrency(pkg.price, pkg.currency)}`}
           </button>
@@ -118,12 +118,12 @@ export default function Checkout() {
           </p>
         </Reveal>
 
-        <Reveal as="aside" delay={80} className="md:col-span-2 h-fit border border-hairline bg-ivory p-6 shadow-card">
+        <Reveal as="aside" delay={80} className="md:col-span-2 h-fit rounded-[28px] border border-hairline bg-ivory p-6 shadow-card">
           <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-stone">
             <Flag code={pkg.visaType.country.code} />
             {pkg.visaType.country.name}
           </p>
-          <h2 className="mt-1 font-semibold tracking-tight text-ink">{pkg.visaType.name}</h2>
+          <h2 className="font-display mt-1 font-bold tracking-tight text-ink">{pkg.visaType.name}</h2>
           <div className="mt-4 flex items-center justify-between border-t border-hairline pt-4">
             <span className="text-sm text-stone">{pkg.name} package</span>
             <span className="font-bold text-ink">{formatCurrency(pkg.price, pkg.currency)}</span>
@@ -146,7 +146,7 @@ function Field({ label, name, type = "text", required, value, onChange }) {
   return (
     <div>
       <label className="block text-sm font-medium text-ink mb-1">
-        {label} {required && <span className="text-brass">*</span>}
+        {label} {required && <span className="text-error">*</span>}
       </label>
       <input
         type={type}
@@ -154,7 +154,7 @@ function Field({ label, name, type = "text", required, value, onChange }) {
         required={required}
         value={value}
         onChange={onChange}
-        className="w-full border border-hairline px-3 py-2 text-sm transition-all duration-200 focus:border-brass focus:outline-none focus:ring-1 focus:ring-brass"
+        className="w-full rounded-2xl border border-hairline px-4 py-2.5 text-sm transition-all duration-200 focus:border-brass focus:outline-none focus:ring-2 focus:ring-brass"
       />
     </div>
   );

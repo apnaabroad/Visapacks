@@ -25,7 +25,7 @@ export default function CountryImage({ country, variant = "card" }) {
   return (
     <div
       className={`group relative overflow-hidden border-hairline ${
-        isBanner ? "aspect-[21/9] border shadow-card" : "aspect-[4/3] border-b"
+        isBanner ? "aspect-[21/9] rounded-[28px] border shadow-card" : "aspect-[4/3] border-b"
       }`}
     >
       <img

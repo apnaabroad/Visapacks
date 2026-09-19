@@ -2,46 +2,49 @@
 @import "./flags.css";
 
 @theme {
-  /* Ink - deep petrol-black, warmer and less generic than flat black.
-     Primary text, headings, default button fill. */
-  --color-ink: #14251f;
+  /* Ink - near-black, the primary text and headline color. */
+  --color-ink: #0a0a08;
 
-  /* Paper - warm, slightly aged cream instead of clinical white.
-     Page background, text-on-dark. */
-  --color-ivory: #f6f0e2;
+  /* Cloud - a light neutral gray page background, not a warm cream and not
+     clinical white. */
+  --color-ivory: #f2f1ec;
 
-  /* Brass - the signature accent: foil-stamp gold, used sparingly for CTAs,
-     the premium tier, and small highlights. Replaces a generic "brand red". */
-  --color-brass: #a9772f;
+  /* Lime - the one vivid accent color: used for CTA fills, the hero's
+     starburst mark, and one pricing tier's card fill. Used boldly and
+     sparingly, the way a single loud color works in poster design. */
+  --color-brass: #c3f53c;
 
-  /* Petrol - secondary accent, cooler counterpart to brass. Used for stamps,
-     seals, and small structural marks rather than text. */
-  --color-petrol: #1f5c52;
+  /* Slate - a muted secondary neutral, used for the third "quiet" card
+     variant and secondary surfaces. */
+  --color-petrol: #e4e2d9;
 
-  /* Stone - secondary/muted text, warm taupe rather than cool gray. */
-  --color-stone: #6c6353;
+  /* Graphite - secondary/muted text. */
+  --color-stone: #63625b;
 
-  /* Hairline - 1px borders/dividers, warm parchment rather than cool gray. */
-  --color-hairline: #e3d8bd;
+  /* Hairline - 1px borders/dividers. */
+  --color-hairline: #dedcd2;
 
-  /* Sand - light accent text on the dark Premium card. */
-  --color-sand: #e8cd9a;
+  /* Chalk - light text on the dark ink card variant. */
+  --color-sand: #d8d6cc;
 
-  /* Display typeface: a serif with real editorial character for headlines -
-     this one lever does more to avoid "generic AI Tailwind site" than
-     almost anything else. Body stays a clean grotesque for legibility. */
-  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
-  --font-sans:
-    "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Error - a plain, legible red for validation/error text. The lime accent
+     reads as "go", not "stop", and is too low-contrast as small text on
+     the light background anyway, so error states get their own color. */
+  --color-error: #c23b2f;
 
-  /* Layered card shadows - soft and diffuse, tinted toward ink rather than
-     neutral black, and never a hard drop shadow. Registering these under
-     --shadow-* makes Tailwind generate matching shadow-card /
-     shadow-card-hover / shadow-elevated / shadow-nav utilities. */
-  --shadow-card: 0 4px 20px rgba(20, 37, 31, 0.07);
-  --shadow-card-hover: 0 10px 30px rgba(20, 37, 31, 0.12);
-  --shadow-elevated: 0 20px 45px rgba(20, 37, 31, 0.2);
-  --shadow-nav: 0 2px 10px rgba(20, 37, 31, 0.05);
+  /* Display typeface: a bold, rounded geometric grotesque for headlines -
+     big and confident rather than another default system-ui site.
+     Body uses a cleaner, smaller-size-friendly grotesque. */
+  --font-display: "Poppins", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Flat, minimal shadows - this design leans on solid color blocking and
+     bold borders rather than soft depth, so shadows stay small and are
+     used mainly for hover lift, not ambient elevation. */
+  --shadow-card: 0 1px 0 rgba(10, 10, 8, 0.05);
+  --shadow-card-hover: 0 10px 24px rgba(10, 10, 8, 0.12);
+  --shadow-elevated: 0 16px 36px rgba(10, 10, 8, 0.16);
+  --shadow-nav: 0 1px 0 rgba(10, 10, 8, 0.06);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -61,63 +64,6 @@ h2,
 h3,
 .font-display {
   font-family: var(--font-display);
-}
-
-/* A faint, warm paper grain over the whole page - CSS-only (no image
-   asset), just enough to keep large flat color fields from reading as a
-   flat digital fill. Fixed so it doesn't repeat-scroll oddly with content. */
-body {
-  background-image:
-    radial-gradient(rgba(20, 37, 31, 0.035) 0.6px, transparent 0.6px);
-  background-size: 3px 3px;
-  background-attachment: fixed;
-}
-
-/* Warm glow behind the hero, re-tuned to the brass/petrol palette instead
-   of the old red-toned one. */
-.hero-glow {
-  background-image: radial-gradient(ellipse 90% 55% at 50% -10%, rgba(169, 119, 47, 0.1), transparent 70%),
-    radial-gradient(ellipse 70% 50% at 50% 0%, #efe2c4 0%, var(--color-ivory) 65%);
-}
-
-/* A circular ink-stamp mark - the site's signature decorative motif,
-   standing in for the generic "flags orbiting in a circle" animation.
-   Used standalone (hero) and as a badge (pricing). Rotation is passed as
-   an inline custom property per instance for a hand-stamped, slightly
-   imperfect feel. */
-.stamp {
-  --stamp-rotate: -6deg;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1.5px dashed currentColor;
-  border-radius: 9999px;
-  transform: rotate(var(--stamp-rotate));
-}
-
-/* Ticket-stub notches on the pricing cards - two half-circle "die cuts" on
-   the left/right edges, colored to match the page (not the card), so they
-   read as a real physical perforation rather than a decorative circle. */
-.ticket-notch {
-  position: relative;
-}
-.ticket-notch::before,
-.ticket-notch::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 18px;
-  height: 18px;
-  background: var(--color-ivory);
-  border-radius: 9999px;
-  transform: translateY(-50%);
-  z-index: 1;
-}
-.ticket-notch::before {
-  left: -9px;
-}
-.ticket-notch::after {
-  right: -9px;
 }
 
 /* Fade + gentle scale-in for destination photos once they've loaded, instead

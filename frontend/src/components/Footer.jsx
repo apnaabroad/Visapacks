@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-8">
           <div>
-            <p className="font-display text-lg font-semibold">VisaPacks</p>
+            <p className="font-display text-lg font-bold">VisaPacks</p>
             <p className="mt-2 max-w-xs text-sm text-ivory/60">
               Documents, checklists, and templates for self-filed visa applications - you file, we guide.
             </p>

@@ -30,13 +30,13 @@ export default function VisaTypeDetail() {
     <div className="mx-auto max-w-6xl px-4 sm:px-6 py-14">
       <Link
         to={`/countries/${countrySlug}`}
-        className="text-sm text-ink hover:text-brass font-medium transition-colors duration-200"
+        className="text-sm text-ink hover:opacity-60 font-medium transition-colors duration-200"
       >
         ← {visaType.country.name}
       </Link>
 
       <Reveal className="mt-4">
-        <h1 className="flex items-center gap-3 text-3xl sm:text-4xl font-semibold tracking-tight text-ink">
+        <h1 className="flex items-center gap-3 text-3xl sm:text-4xl font-extrabold tracking-tight text-ink">
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-hairline bg-ivory text-xl shadow-card">
             <Flag code={visaType.country.code} />
           </span>

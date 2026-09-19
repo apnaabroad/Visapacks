@@ -26,16 +26,12 @@ export default function OrderConfirmation() {
   return (
     <div className="mx-auto max-w-xl px-4 sm:px-6 py-20 text-center">
       <Reveal>
-        <span
-          className="stamp mx-auto flex h-20 w-20 flex-col items-center justify-center text-petrol"
-          style={{ "--stamp-rotate": "-6deg" }}
-        >
-          <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" aria-hidden="true">
-            <path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <span className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-brass text-ink">
+          <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" aria-hidden="true">
+            <path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span className="text-[8px] font-semibold uppercase tracking-widest">Confirmed</span>
         </span>
-        <h1 className="font-display mt-5 text-3xl sm:text-4xl font-semibold tracking-tight text-ink">
+        <h1 className="font-display mt-6 text-3xl sm:text-4xl font-extrabold tracking-tight text-ink">
           You're all set, {order.customerName.split(" ")[0]}!
         </h1>
         <p className="mt-3 text-stone">
@@ -47,14 +43,14 @@ export default function OrderConfirmation() {
         </p>
       </Reveal>
 
-      <Reveal delay={100} className="mt-10 border border-hairline bg-ivory p-6 text-left shadow-card">
+      <Reveal delay={100} className="mt-10 rounded-[28px] border border-hairline bg-ivory p-6 text-left shadow-card">
         <div className="flex items-center justify-between text-sm">
           <span className="text-stone">Order number</span>
           <span className="font-mono font-semibold text-ink">{order.orderNumber}</span>
         </div>
         <div className="mt-3 flex items-center justify-between text-sm">
           <span className="text-stone">Status</span>
-          <span className="border border-hairline px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-ink">
+          <span className="rounded-full bg-petrol px-3 py-1 text-xs font-bold uppercase tracking-wide text-ink">
             {order.status}
           </span>
         </div>
@@ -67,8 +63,8 @@ export default function OrderConfirmation() {
       </Reveal>
 
       {order.package.documents?.length > 0 && (
-        <Reveal delay={130} className="mt-6 border border-hairline bg-ivory p-6 text-left shadow-card">
-          <p className="text-xs font-semibold uppercase tracking-wide text-stone">Your documents</p>
+        <Reveal delay={130} className="mt-6 rounded-[28px] border border-hairline bg-ivory p-6 text-left shadow-card">
+          <p className="text-xs font-bold uppercase tracking-wide text-stone">Your documents</p>
           <ul className="mt-4 space-y-3">
             {order.package.documents.map((doc) => (
               <li key={doc.id}>
@@ -76,7 +72,7 @@ export default function OrderConfirmation() {
                   href={resolveFileUrl(doc.fileUrl)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-between gap-3 border border-hairline p-3 text-sm transition-all duration-200 hover:border-brass/50 hover:shadow-card-hover"
+                  className="group flex items-center justify-between gap-3 rounded-2xl border border-hairline p-3 text-sm transition-all duration-200 hover:border-ink hover:shadow-card-hover"
                 >
                   <span>
                     <span className="block font-medium text-ink">{doc.title}</span>
@@ -84,7 +80,7 @@ export default function OrderConfirmation() {
                       <span className="mt-0.5 block text-xs text-stone">{doc.description}</span>
                     )}
                   </span>
-                  <span className="shrink-0 text-xs font-semibold uppercase tracking-wide text-stone group-hover:text-brass">
+                  <span className="shrink-0 text-xs font-semibold uppercase tracking-wide text-stone group-hover:opacity-60">
                     {doc.fileType} ↓
                   </span>
                 </a>
@@ -97,7 +93,7 @@ export default function OrderConfirmation() {
       <Reveal delay={160}>
         <Link
           to="/"
-          className="mt-10 inline-block bg-ink px-5 py-2.5 text-sm font-semibold text-ivory transition-all duration-200 hover:bg-brass hover:scale-[1.02] hover:shadow-lg"
+          className="mt-10 inline-block rounded-full bg-ink px-6 py-3 text-sm font-bold text-ivory transition-all duration-200 hover:bg-brass hover:text-ink hover:scale-[1.02]"
         >
           Browse more destinations
         </Link>

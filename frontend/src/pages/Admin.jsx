@@ -50,10 +50,10 @@ export default function Admin() {
             placeholder="Admin secret"
             className="w-full border border-hairline px-3 py-2 text-sm transition-all duration-200 focus:border-ink focus:outline-none focus:ring-1 focus:ring-ink"
           />
-          {authError && <p className="text-sm text-brass">{authError}</p>}
+          {authError && <p className="text-sm text-error">{authError}</p>}
           <button
             type="submit"
-            className="w-full bg-ink px-4 py-2.5 text-sm font-semibold text-ivory transition-all duration-200 hover:bg-brass"
+            className="w-full bg-ink px-4 py-2.5 text-sm font-semibold text-ivory transition-all duration-200 hover:bg-brass hover:text-ink"
           >
             Continue
           </button>
@@ -115,7 +115,7 @@ function PackageRow({ pkg, secret, expanded, onToggle, onDocsChanged }) {
           <Flag code={pkg.visaType.country.code} />
           <span className="truncate text-sm text-ink">
             <span className="font-medium">{pkg.visaType.country.name}</span> · {pkg.visaType.name} ·{" "}
-            <span className="font-semibold text-brass">{pkg.tier}</span>
+            <span className="font-semibold text-ink">{pkg.tier}</span>
           </span>
         </span>
         <span className="shrink-0 text-xs font-medium uppercase tracking-wide text-stone">
@@ -125,7 +125,7 @@ function PackageRow({ pkg, secret, expanded, onToggle, onDocsChanged }) {
 
       {expanded && (
         <div className="border-t border-hairline bg-hairline/10 p-4">
-          {loadError && <p className="text-sm text-brass">{loadError}</p>}
+          {loadError && <p className="text-sm text-error">{loadError}</p>}
           {documents === null && !loadError && <p className="text-sm text-stone">Loading...</p>}
           {documents && (
             <ul className="space-y-2">
@@ -139,7 +139,7 @@ function PackageRow({ pkg, secret, expanded, onToggle, onDocsChanged }) {
                     href={resolveFileUrl(doc.fileUrl)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="min-w-0 truncate text-ink hover:text-brass"
+                    className="min-w-0 truncate text-ink hover:opacity-60"
                   >
                     <span className="font-medium">{doc.title}</span>{" "}
                     <span className="text-xs uppercase text-stone">.{doc.fileType}</span>
@@ -151,7 +151,7 @@ function PackageRow({ pkg, secret, expanded, onToggle, onDocsChanged }) {
                       loadDocuments();
                       onDocsChanged();
                     }}
-                    className="shrink-0 text-xs font-semibold uppercase tracking-wide text-stone hover:text-brass"
+                    className="shrink-0 text-xs font-semibold uppercase tracking-wide text-stone hover:opacity-60"
                   >
                     Remove
                   </button>
@@ -226,13 +226,13 @@ function UploadForm({ packageId, secret, onUploaded }) {
         required
         accept=".pdf,.docx,.html"
         onChange={(event) => setFile(event.target.files[0] ?? null)}
-        className="sm:col-span-2 text-sm text-ink file:mr-3 file:border-0 file:bg-ink file:px-3 file:py-1.5 file:text-xs file:font-semibold file:uppercase file:text-ivory file:transition-colors file:hover:bg-brass"
+        className="sm:col-span-2 text-sm text-ink file:mr-3 file:border-0 file:bg-ink file:px-3 file:py-1.5 file:text-xs file:font-semibold file:uppercase file:text-ivory file:transition-colors file:hover:bg-brass file:hover:text-ink"
       />
-      {error && <p className="sm:col-span-2 text-sm text-brass">{error}</p>}
+      {error && <p className="sm:col-span-2 text-sm text-error">{error}</p>}
       <button
         type="submit"
         disabled={submitting}
-        className="sm:col-span-2 bg-ink px-4 py-2 text-sm font-semibold text-ivory transition-all duration-200 hover:bg-brass disabled:opacity-60"
+        className="sm:col-span-2 bg-ink px-4 py-2 text-sm font-semibold text-ivory transition-all duration-200 hover:bg-brass hover:text-ink disabled:opacity-60"
       >
         {submitting ? "Uploading..." : "Upload document"}
       </button>

@@ -2,53 +2,65 @@ import { Link } from "react-router-dom";
 
 import { formatCurrency } from "../lib/currency.js";
 
-// Styled like a boarding-pass / ticket stub - a dashed perforation between
-// the price block and the feature list, with die-cut notches on the card's
-// edges (see .ticket-notch in index.css) instead of a plain bordered box.
+// Tiers are told apart by solid color blocking - the same device the
+// reference layout uses for its content cards - rather than by a subtle
+// border/shadow difference. Starter stays a quiet outline; each tier above
+// it gets a bolder fill.
+const TIER_STYLE = {
+  STARTER: {
+    card: "bg-ivory border border-hairline text-ink",
+    muted: "text-stone",
+    button: "bg-ink text-ivory hover:bg-brass hover:text-ink",
+  },
+  ESSENTIAL: {
+    card: "bg-petrol border border-petrol text-ink",
+    muted: "text-stone",
+    button: "bg-ink text-ivory hover:bg-brass hover:text-ink",
+  },
+  COMPLETE: {
+    card: "bg-brass border border-brass text-ink",
+    muted: "text-ink/60",
+    button: "bg-ink text-ivory hover:bg-ivory hover:text-ink",
+  },
+  PREMIUM: {
+    card: "bg-ink border border-ink text-ivory",
+    muted: "text-sand",
+    button: "bg-ivory text-ink hover:bg-brass",
+  },
+};
+
 export default function PackageCard({ pkg }) {
-  const isPremium = pkg.tier === "PREMIUM";
-  const isPopular = pkg.popular && !isPremium;
-  const mutedText = isPremium ? "text-sand" : "text-stone";
+  const style = TIER_STYLE[pkg.tier] ?? TIER_STYLE.STARTER;
+  const isPopular = pkg.popular && pkg.tier !== "PREMIUM";
 
   return (
     <div
-      className={`ticket-notch relative flex h-full flex-col border p-8 transition-all duration-200 ${
-        isPremium
-          ? "bg-ink border-ink text-ivory shadow-elevated hover:-translate-y-1 hover:shadow-[0_24px_55px_rgba(20,37,31,0.3)]"
-          : isPopular
-            ? "bg-ivory border-brass/40 text-ink shadow-elevated lg:scale-105 z-10 hover:-translate-y-1 hover:shadow-[0_24px_55px_rgba(169,119,47,0.2)]"
-            : "bg-ivory border-hairline text-ink shadow-card hover:-translate-y-1 hover:shadow-card-hover"
-      }`}
+      className={`relative flex h-full flex-col rounded-[28px] p-8 transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover ${style.card}`}
     >
       {isPopular && (
-        <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap bg-brass px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-ivory shadow-card-hover">
+        <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-ink px-4 py-1.5 text-[11px] font-bold uppercase tracking-wide text-ivory shadow-card-hover">
           Most Chosen
         </span>
       )}
 
-      <p className="text-xs font-semibold uppercase tracking-wide">
-        <span className={mutedText}>{pkg.tier}</span>
+      <p className="text-xs font-bold uppercase tracking-wide">
+        <span className={style.muted}>{pkg.tier}</span>
       </p>
 
-      <h3 className="font-display mt-3 text-xl font-semibold tracking-tight">{pkg.name}</h3>
-      <p className={`mt-1 text-sm ${mutedText}`}>{pkg.tagline}</p>
+      <h3 className="font-display mt-3 text-xl font-bold tracking-tight">{pkg.name}</h3>
+      <p className={`mt-1 text-sm ${style.muted}`}>{pkg.tagline}</p>
 
-      <p className="font-display mt-8 text-4xl font-semibold tracking-tight">
+      <p className="font-display mt-8 text-4xl font-extrabold tracking-tight">
         {formatCurrency(pkg.price, pkg.currency)}
       </p>
-      <p className={`mt-1 text-xs font-medium uppercase tracking-wide ${mutedText}`}>
+      <p className={`mt-1 text-xs font-semibold uppercase tracking-wide ${style.muted}`}>
         One-time{pkg.turnaround && ` · ${pkg.turnaround}`}
       </p>
 
-      <div
-        className={`mt-8 border-t border-dashed ${isPremium ? "border-ivory/25" : "border-hairline"}`}
-        aria-hidden="true"
-      />
-
-      <ul className="mt-6 flex-1 space-y-3 text-sm">
+      <ul className="mt-8 flex-1 space-y-3 text-sm">
         {pkg.features.map((feature) => (
           <li key={feature} className="flex items-start gap-3">
-            <span className={mutedText}>—</span>
+            <span className={style.muted}>—</span>
             <span>{feature}</span>
           </li>
         ))}
@@ -56,11 +68,7 @@ export default function PackageCard({ pkg }) {
 
       <Link
         to={`/checkout/${pkg.id}`}
-        className={`mt-10 block px-4 py-3 text-center text-sm font-semibold transition-all duration-200 hover:scale-[1.02] hover:shadow-lg ${
-          isPremium
-            ? "bg-ivory text-ink hover:bg-brass hover:text-ivory"
-            : "bg-ink text-ivory hover:bg-brass"
-        }`}
+        className={`mt-10 block rounded-full px-4 py-3.5 text-center text-sm font-bold transition-all duration-200 hover:scale-[1.02] ${style.button}`}
       >
         Choose {pkg.name}
       </Link>

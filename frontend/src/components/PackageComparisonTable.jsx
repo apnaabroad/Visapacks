@@ -2,9 +2,11 @@ import { FEATURE_MATRIX, TIER_LABELS, TIER_ORDER } from "../data/packageFeatures
 
 function Check() {
   return (
-    <svg viewBox="0 0 20 20" fill="none" className="mx-auto h-4 w-4 text-brass" aria-hidden="true">
-      <path d="M4 10.5l3.5 3.5L16 5.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
+    <span className="mx-auto flex h-6 w-6 items-center justify-center rounded-full bg-ink">
+      <svg viewBox="0 0 20 20" fill="none" className="h-3.5 w-3.5 text-brass" aria-hidden="true">
+        <path d="M4 10.5l3.5 3.5L16 5.5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </span>
   );
 }
 
@@ -26,8 +28,8 @@ export default function PackageComparisonTable({ packages }) {
 
   return (
     <div className="mt-20">
-      <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">Compare packages</h2>
-      <div className="mt-6 overflow-x-auto border border-hairline bg-ivory shadow-card">
+      <h2 className="font-display text-2xl font-bold tracking-tight text-ink">Compare packages</h2>
+      <div className="mt-6 overflow-x-auto rounded-[28px] border border-hairline bg-ivory shadow-card">
         <table className="w-full min-w-[640px] border-collapse text-sm">
           <thead>
             <tr>
@@ -37,10 +39,10 @@ export default function PackageComparisonTable({ packages }) {
               {tiers.map((tier) => {
                 const pkg = packages.find((p) => p.tier === tier);
                 return (
-                  <th key={tier} className="border-b border-hairline px-4 py-4 text-center font-semibold text-ink">
+                  <th key={tier} className="border-b border-hairline px-4 py-4 text-center font-bold text-ink">
                     {pkg?.name ?? TIER_LABELS[tier]}
                     {pkg?.popular && (
-                      <span className="mt-1 block text-[10px] font-semibold uppercase tracking-wide text-brass">
+                      <span className="mt-1.5 inline-block rounded-full bg-brass px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-ink">
                         Most Chosen
                       </span>
                     )}

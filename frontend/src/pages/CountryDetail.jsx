@@ -28,7 +28,7 @@ export default function CountryDetail() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 sm:px-6 py-14">
-      <Link to="/" className="text-sm text-ink hover:text-brass font-medium transition-colors duration-200">
+      <Link to="/" className="text-sm text-ink hover:opacity-60 font-medium transition-colors duration-200">
         ← All countries
       </Link>
 
@@ -41,12 +41,12 @@ export default function CountryDetail() {
           <Flag code={country.code} />
         </span>
         <div>
-          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-ink">{country.name}</h1>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-ink">{country.name}</h1>
           <p className="text-stone">{country.summary}</p>
         </div>
       </Reveal>
 
-      <h2 className="mt-12 text-2xl font-semibold tracking-tight text-ink">Select a visa type</h2>
+      <h2 className="mt-12 text-2xl font-bold tracking-tight text-ink">Select a visa type</h2>
       <div className="mt-5 space-y-3">
         {country.visaTypes.length === 0 && (
           <p className="text-stone text-sm">No visa types are available for this country yet.</p>
